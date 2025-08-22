@@ -1,0 +1,31 @@
+{
+  "name": "loopr-sdk",
+  "version": "1.0.0",
+  "main": "dist/loopr-sdk.umd.js",
+  "module": "dist/loopr-sdk.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "keywords": [],
+  "author": "Amitrajeet",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^2.79.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@solana/pay": "^0.2.6",
+    "@solana/web3.js": "^1.98.4",
+    "bignumber.js": "^9.3.1",
+    "ethers": "^6.15.0",
+    "qrcode": "^1.5.4"
+  }
+}
