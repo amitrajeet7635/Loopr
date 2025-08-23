@@ -61,4 +61,9 @@ dependencies {
 
     implementation ("com.google.dagger:hilt-android:2.56.2")
     ksp ("com.google.dagger:hilt-compiler:2.56.2")
+
+    //Web3 Auth SDK
+    implementation("com.github.web3auth:web3auth-android-sdk:9.0.0")
+    //Kotlin client for solana
+    implementation("org.sol4k:sol4k:0.5.17")
 }
