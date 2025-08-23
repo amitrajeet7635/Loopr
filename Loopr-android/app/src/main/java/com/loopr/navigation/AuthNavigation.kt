@@ -1,30 +1,45 @@
 package com.loopr.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.loopr.ui.presentation.screens.SignInScreen
 import com.loopr.ui.presentation.screens.EmailVerificationScreen
 
 fun NavGraphBuilder.authNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    deepLinkUri: Uri? = null
 ) {
     navigation(
         startDestination = LooprDestinations.SIGN_IN,
         route = LooprDestinations.AUTH_GRAPH
     ) {
-        composable(LooprDestinations.SIGN_IN) {
+        composable(
+            LooprDestinations.SIGN_IN,
+            deepLinks = listOf(navDeepLink { uriPattern = "com.loopr://auth" })
+        ) {
             SignInScreen(
+                resultUri = deepLinkUri,
                 onEmailSubmitted = { email ->
                     navController.navigate("${LooprDestinations.EMAIL_VERIFICATION}/$email")
                 },
                 onGoogleSignIn = {
-                    // Handle Google sign in
+                    // This will be handled by Web3AuthManager
                 },
                 onMetaMaskSignIn = {
                     // Handle MetaMask sign in
+                },
+                onAuthenticationSuccess = {
+                    // Navigate to main app when Web3Auth succeeds
+                    navController.navigate(LooprDestinations.MAIN_GRAPH) {
+                        popUpTo(LooprDestinations.AUTH_GRAPH) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -39,6 +54,11 @@ fun NavGraphBuilder.authNavigation(
                 onCodeVerified = { code ->
                     // Handle code verification success
                     // Navigate to main app or handle authentication
+                    navController.navigate(LooprDestinations.MAIN_GRAPH) {
+                        popUpTo(LooprDestinations.AUTH_GRAPH) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onResendCode = {
                     // Handle resend code
