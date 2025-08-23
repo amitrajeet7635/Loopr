@@ -2,10 +2,34 @@ package com.loopr.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Loopr Brand Colors
+val LooprCyan = Color(0xFF83F0FF)
+val LooprCyanVariant = Color(0xFF4DD0E1)
+val LooprDarkCyan = Color(0xFF00BCD4)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Dark Theme Colors
+val DarkBackground = Color(0xFF0D1117)
+val DarkSurface = Color(0xFF161B22)
+val DarkSurfaceVariant = Color(0xFF21262D)
+val DarkOnBackground = Color(0xFFE6EDF3)
+val DarkOnSurface = Color(0xFFE6EDF3)
+val DarkOnSurfaceVariant = Color(0xFF8B949E)
+
+// Light Theme Colors  
+val LightBackground = Color(0xFFF6F8FA)
+val LightSurface = Color(0xFFFFFFFF)
+val LightSurfaceVariant = Color(0xFFF0F6FC)
+val LightOnBackground = Color(0xFF24292F)
+val LightOnSurface = Color(0xFF24292F)
+val LightOnSurfaceVariant = Color(0xFF656D76)
+
+// Semantic Colors
+val SuccessColor = Color(0xFF238636)
+val ErrorColor = Color(0xFFDA3633)
+val WarningColor = Color(0xFFBF8700)
+val InfoColor = Color(0xFF0969DA)
+
+// Button Colors
+val ButtonPrimary = LooprCyan
+val ButtonSecondary = Color(0xFF21262D)
+val ButtonTertiary = Color(0x1A83F0FF)
