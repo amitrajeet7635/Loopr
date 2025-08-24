@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprTheme
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
@@ -42,6 +43,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignInScreen(
     resultUri: Uri? = null,
+    authViewModel: AuthViewModel,
     onGoogleSignIn: () -> Unit = {},
     onEmailSubmitted: (String) -> Unit = {},
     onMetaMaskSignIn: () -> Unit = {},
@@ -61,7 +63,7 @@ fun SignInScreen(
         Web3Auth(
             Web3AuthOptions(
                 "BB7pTH54rSoTxEGLATfmTaqzPugFNo3dsW84i1Z5Tg0FNJdGb_TewcAw5Y_9oB5vxQ4JTM8psVdRJYwXsBfpRxw",
-                Network.SAPPHIRE_MAINNET,
+                Network.SAPPHIRE_DEVNET,
                 BuildEnv.PRODUCTION,
                 Uri.parse("com.loopr://auth")
             ),
@@ -97,7 +99,7 @@ fun SignInScreen(
         }
     }
 
-    // Handle deep link result like in your working example
+    // Handle deep link result and integrate with authViewModel
     LaunchedEffect(resultUri) {
         if (resultUri != null) {
             web3Auth.setResultUrl(resultUri)
@@ -105,6 +107,29 @@ fun SignInScreen(
                 if (error == null) {
                     val userInfo = web3Auth.getUserInfo()
                     Log.d("SignInScreen", "Authentication successful: $userInfo")
+
+                    // Get session data from Web3Auth for secure storage
+                    // Use the Web3Auth state/session token - this contains the JWT session
+                    val sessionData = try {
+                        // The Web3Auth instance itself maintains the session state
+                        // We'll use the user's verifierId as a session identifier
+                        userInfo?.verifierId ?: ""
+                    } catch (e: Exception) {
+                        Log.e("SignInScreen", "Error getting session data: ${e.message}")
+                        ""
+                    }
+
+                    // Create UserProfile from Web3Auth userInfo
+                    val userProfile = com.loopr.data.model.UserProfile(
+                        emailId = userInfo?.email ?: "",
+                        name = userInfo?.name ?: "",
+                        profileImageUrl = userInfo?.profileImage ?: "",
+                        web3AuthId = userInfo?.verifierId ?: ""
+                    )
+
+                    // Save session and profile through authViewModel
+                    authViewModel.onWeb3AuthSuccess(sessionData, userProfile)
+
                     // Stop loading
                     isLoading = false
                     loadingMessage = ""
@@ -150,6 +175,21 @@ fun SignInScreen(
                     )
                 }
             }
+        }
+    }
+
+    // Separate function for email verification (not Web3Auth)
+    fun handleEmailSubmission() {
+        isLoading = true
+        loadingMessage = "Preparing verification..."
+
+        // Simulate email sending process
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(1000) // Brief loading to show processing
+            isLoading = false
+            loadingMessage = ""
+            // Navigate to email verification screen
+            onEmailSubmitted(email)
         }
     }
 
@@ -248,13 +288,7 @@ fun SignInScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             if (isValidEmail && !isLoading) {
-                                login(
-                                    LoginParams(
-                                        Provider.EMAIL_PASSWORDLESS,
-                                        extraLoginOptions = ExtraLoginOptions(login_hint = email)
-                                    ),
-                                    LoginType.EMAIL
-                                )
+                                handleEmailSubmission()
                             }
                         }
                     ),
@@ -268,17 +302,11 @@ fun SignInScreen(
                     enabled = !isLoading
                 )
 
-                // Submit Button - No loading icon, clean button
+                // Submit Button - Now navigates to EmailVerificationScreen
                 Button(
                     onClick = {
                         if (isValidEmail && !isLoading) {
-                            login(
-                                LoginParams(
-                                    Provider.EMAIL_PASSWORDLESS,
-                                    extraLoginOptions = ExtraLoginOptions(login_hint = email)
-                                ),
-                                LoginType.EMAIL
-                            )
+                            handleEmailSubmission()
                         }
                     },
                     enabled = isValidEmail && !isLoading,
@@ -502,21 +530,5 @@ private fun SignInButton(
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignInScreenPreview() {
-    LooprTheme {
-        SignInScreen()
-    }
-}
-
-@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun SignInScreenDarkPreview() {
-    LooprTheme {
-        SignInScreen()
     }
 }

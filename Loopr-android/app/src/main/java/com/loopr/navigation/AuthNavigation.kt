@@ -9,10 +9,12 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import com.loopr.ui.presentation.screens.SignInScreen
 import com.loopr.ui.presentation.screens.EmailVerificationScreen
+import com.loopr.ui.presentation.viewmodel.AuthViewModel
 
 fun NavGraphBuilder.authNavigation(
     navController: NavHostController,
-    deepLinkUri: Uri? = null
+    deepLinkUri: Uri? = null,
+    authViewModel: AuthViewModel
 ) {
     navigation(
         startDestination = LooprDestinations.SIGN_IN,
@@ -24,6 +26,7 @@ fun NavGraphBuilder.authNavigation(
         ) {
             SignInScreen(
                 resultUri = deepLinkUri,
+                authViewModel = authViewModel,
                 onEmailSubmitted = { email ->
                     navController.navigate("${LooprDestinations.EMAIL_VERIFICATION}/$email")
                 },
@@ -51,17 +54,13 @@ fun NavGraphBuilder.authNavigation(
                 onBackPressed = {
                     navController.popBackStack()
                 },
-                onCodeVerified = { code ->
-                    // Handle code verification success
-                    // Navigate to main app or handle authentication
+                onCodeVerified = { verificationCode ->
+                    // Navigate to main app after email verification
                     navController.navigate(LooprDestinations.MAIN_GRAPH) {
                         popUpTo(LooprDestinations.AUTH_GRAPH) {
                             inclusive = true
                         }
                     }
-                },
-                onResendCode = {
-                    // Handle resend code
                 }
             )
         }

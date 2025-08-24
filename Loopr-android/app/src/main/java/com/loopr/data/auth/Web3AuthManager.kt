@@ -30,7 +30,7 @@ class Web3AuthManager @Inject constructor(
             web3Auth = Web3Auth(
                 Web3AuthOptions(
                     clientId = "BB7pTH54rSoTxEGLATfmTaqzPugFNo3dsW84i1Z5Tg0FNJdGb_TewcAw5Y_9oB5vxQ4JTM8psVdRJYwXsBfpRxw",
-                    network = Network.SAPPHIRE_MAINNET,
+                    network = Network.SAPPHIRE_DEVNET,
                     buildEnv = BuildEnv.PRODUCTION,
                     redirectUrl = Uri.parse("com.loopr://auth")
                 ),

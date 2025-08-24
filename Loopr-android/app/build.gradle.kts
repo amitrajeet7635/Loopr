@@ -74,4 +74,11 @@ dependencies {
 
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
+
+    // DataStore for user profile management
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.datastore:datastore-core:1.1.7")
+
+    // Encrypted SharedPreferences for secure Web3Auth session storage
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
