@@ -32,6 +32,10 @@ class AuthViewModel @Inject constructor(
 
     private fun checkAuthenticationStatus() {
         viewModelScope.launch {
+            // Record start time for minimum loading duration
+            val startTime = System.currentTimeMillis()
+            val minimumLoadingDuration = 2000L // 2 seconds minimum loading time
+
             var newAuthState: AuthState = AuthState.Loading
             try {
                 val savedSession = userRepository.getWeb3AuthSession()
@@ -64,6 +68,16 @@ class AuthViewModel @Inject constructor(
                 handleSessionExpired()
                 newAuthState = AuthState.Unauthenticated
             }
+
+            // Ensure minimum loading time has passed before updating state
+            val elapsedTime = System.currentTimeMillis() - startTime
+            val remainingTime = minimumLoadingDuration - elapsedTime
+
+            if (remainingTime > 0) {
+                // Wait for the remaining time to reach minimum duration
+                kotlinx.coroutines.delay(remainingTime)
+            }
+
             _authState.value = newAuthState
         }
     }

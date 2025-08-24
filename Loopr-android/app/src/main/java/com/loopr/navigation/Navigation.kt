@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import android.net.Uri
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
@@ -21,7 +22,7 @@ fun LooprNavigation(
 
     // Determine start destination based on authentication state
     val startDestination = when (authState) {
-        AuthState.Loading -> LooprDestinations.AUTH_GRAPH // Show loading or splash
+        AuthState.Loading -> LooprDestinations.LOADING // Show proper loading screen
         AuthState.Authenticated -> LooprDestinations.MAIN_GRAPH
         AuthState.Unauthenticated -> LooprDestinations.AUTH_GRAPH
     }
@@ -30,6 +31,11 @@ fun LooprNavigation(
         navController = navController,
         startDestination = startDestination
     ) {
+        // Loading screen for authentication checks
+        composable(LooprDestinations.LOADING) {
+            com.loopr.ui.presentation.components.LooprSplashScreen()
+        }
+
         // Auth navigation graph (Sign in, Email verification, etc.)
         authNavigation(navController, deepLinkUri, authViewModel)
 
