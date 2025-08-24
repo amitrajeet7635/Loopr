@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.loopr"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    val nav_version = "2.9.3"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,4 +62,23 @@ dependencies {
 
     implementation ("com.google.dagger:hilt-android:2.56.2")
     ksp ("com.google.dagger:hilt-compiler:2.56.2")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    //Web3 Auth SDK
+    implementation("com.github.web3auth:web3auth-android-sdk:9.0.0")
+    //Kotlin client for solana
+    implementation("org.sol4k:sol4k:0.5.17")
+
+    //compose navigation
+    implementation("androidx.navigation:navigation-compose:${nav_version}")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.2.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
+
+    // DataStore for user profile management
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("androidx.datastore:datastore-core:1.1.7")
+
+    // Encrypted SharedPreferences for secure Web3Auth session storage
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
