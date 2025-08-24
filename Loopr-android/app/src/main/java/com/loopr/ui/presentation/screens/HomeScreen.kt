@@ -27,25 +27,34 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
+import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel
+) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            LooprTopAppBar(authViewModel = authViewModel)
+        },
         bottomBar = {
             LooprBottomNavigationBar(
                 selectedTab = selectedTab,
                 onTabSelected = { selectedTab = it }
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0) // Remove default content insets to prevent double padding
     ) { paddingValues ->
         // Main content based on selected tab
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -554,3 +563,173 @@ private data class BottomNavItem(
     val unselectedIcon: ImageVector,
     val selectedIcon: ImageVector
 )
+
+@Composable
+private fun LooprTopAppBar(
+    authViewModel: AuthViewModel
+) {
+    var showDropdown by remember { mutableStateOf(false) }
+
+    // Collect user profile data from AuthViewModel
+    val userProfile by authViewModel.userProfile.collectAsState()
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding(), // Add status bar padding to prevent overlap
+        color = MaterialTheme.colorScheme.background,
+        shadowElevation = 4.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Loopr Logo/Brand
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Logo placeholder - will be replaced with actual logo later
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(LooprCyan, LooprCyanVariant)
+                            )
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "L",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Text(
+                    text = "Loopr",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            // Account Avatar with Dropdown
+            Box {
+                // Avatar
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    LooprCyan.copy(alpha = 0.2f),
+                                    LooprCyan.copy(alpha = 0.1f)
+                                )
+                            )
+                        )
+                        .clickable { showDropdown = !showDropdown },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "Account",
+                        tint = LooprCyan,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                // Dropdown Menu with real user data
+                DropdownMenu(
+                    expanded = showDropdown,
+                    onDismissRequest = { showDropdown = false },
+                    modifier = Modifier.width(200.dp),
+                    properties = PopupProperties(
+                        dismissOnBackPress = true,
+                        dismissOnClickOutside = true
+                    )
+                ) {
+                    // Account Name - Now using real data from DataStore
+                    DropdownMenuItem(
+                        text = {
+                            Column {
+                                Text(
+                                    text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        },
+                        onClick = { },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.AccountCircle,
+                                contentDescription = null,
+                                tint = LooprCyan
+                            )
+                        }
+                    )
+
+                    HorizontalDivider()
+
+                    // Profile Option
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = "Profile",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        },
+                        onClick = {
+                            showDropdown = false
+                            // TODO: Navigate to profile
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Person,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    )
+
+                    // Logout Option
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                text = "Logout",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        },
+                        onClick = {
+                            showDropdown = false
+                            // TODO: Handle logout functionality
+                        },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.ExitToApp,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
