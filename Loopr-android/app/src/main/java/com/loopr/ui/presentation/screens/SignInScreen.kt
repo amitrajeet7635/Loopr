@@ -2,7 +2,6 @@ package com.loopr.ui.presentation.screens
 
 import android.net.Uri
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,15 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
-import com.loopr.ui.theme.LooprTheme
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
-import com.web3auth.core.Web3Auth
-import com.web3auth.core.types.*
+import com.loopr.data.auth.Web3AuthManager
+import com.loopr.data.auth.Web3AuthState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -44,141 +42,81 @@ import kotlinx.coroutines.launch
 fun SignInScreen(
     resultUri: Uri? = null,
     authViewModel: AuthViewModel,
-    onGoogleSignIn: () -> Unit = {},
+    web3AuthManager: Web3AuthManager,
     onEmailSubmitted: (String) -> Unit = {},
-    onMetaMaskSignIn: () -> Unit = {},
     onAuthenticationSuccess: () -> Unit = {}
 ) {
-    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     var loadingMessage by remember { mutableStateOf("") }
-    var showBrowserClosedMessage by remember { mutableStateOf(false) }
 
     val isValidEmail = email.isNotBlank() && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Initialize Web3Auth directly in the screen like your working example
-    val web3Auth = remember(context) {
-        Web3Auth(
-            Web3AuthOptions(
-                "BB7pTH54rSoTxEGLATfmTaqzPugFNo3dsW84i1Z5Tg0FNJdGb_TewcAw5Y_9oB5vxQ4JTM8psVdRJYwXsBfpRxw",
-                Network.SAPPHIRE_DEVNET,
-                BuildEnv.PRODUCTION,
-                Uri.parse("com.loopr://auth")
-            ),
-            context as ComponentActivity
-        )
-    }
+    // Observe Web3Auth state
+    val web3AuthState by web3AuthManager.authState.collectAsState()
 
-    // Check for browser closed state on every composition and when resuming
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(500) // Check every 500ms
-            if (Web3Auth.getCustomTabsClosed()) {
-                Log.d("SignInScreen", "Browser was closed detected")
-                showBrowserClosedMessage = true
-                Web3Auth.setCustomTabsClosed(false)
-                // Stop loading when browser is closed
-                isLoading = false
-                loadingMessage = ""
-                break
-            }
-        }
-    }
-
-    // Show snackbar when browser is closed
-    LaunchedEffect(showBrowserClosedMessage) {
-        if (showBrowserClosedMessage) {
-            snackbarHostState.showSnackbar(
-                message = "Browser was closed. Please try again.",
-                actionLabel = "OK",
-                duration = SnackbarDuration.Short
-            )
-            showBrowserClosedMessage = false
-        }
-    }
-
-    // Handle deep link result and integrate with authViewModel
+    // Handle deep link result through Web3AuthManager
     LaunchedEffect(resultUri) {
         if (resultUri != null) {
-            web3Auth.setResultUrl(resultUri)
-            web3Auth.initialize().whenComplete { _, error ->
-                if (error == null) {
-                    val userInfo = web3Auth.getUserInfo()
-                    Log.d("SignInScreen", "Authentication successful: $userInfo")
+            Log.d("SignInScreen", "Processing deep link: $resultUri")
+            web3AuthManager.setResultUrl(resultUri)
+        }
+    }
 
-                    // Get session data from Web3Auth for secure storage
-                    // Use the Web3Auth state/session token - this contains the JWT session
-                    val sessionData = try {
-                        // The Web3Auth instance itself maintains the session state
-                        // We'll use the user's verifierId as a session identifier
-                        userInfo?.verifierId ?: ""
-                    } catch (e: Exception) {
-                        Log.e("SignInScreen", "Error getting session data: ${e.message}")
-                        ""
-                    }
+    // Handle Web3Auth state changes
+    LaunchedEffect(web3AuthState) {
+        when (val currentState = web3AuthState) {
+            is Web3AuthState.Loading -> {
+                isLoading = true
+                loadingMessage = "Authenticating..."
+            }
+            is Web3AuthState.Authenticated -> {
+                val userInfo = web3AuthManager.userInfo.value
+                if (userInfo != null) {
+                    Log.d("SignInScreen", "Authentication successful: $userInfo")
 
                     // Create UserProfile from Web3Auth userInfo
                     val userProfile = com.loopr.data.model.UserProfile(
-                        emailId = userInfo?.email ?: "",
-                        name = userInfo?.name ?: "",
-                        profileImageUrl = userInfo?.profileImage ?: "",
-                        web3AuthId = userInfo?.verifierId ?: ""
+                        emailId = userInfo.email ?: "",
+                        name = userInfo.name ?: "",
+                        profileImageUrl = userInfo.profileImage ?: "",
+                        web3AuthId = userInfo.verifierId ?: ""
                     )
 
                     // Save session and profile through authViewModel
-                    authViewModel.onWeb3AuthSuccess(sessionData, userProfile)
+                    authViewModel.onWeb3AuthSuccess(userInfo.verifierId ?: "", userProfile)
 
-                    // Stop loading
+                    // Stop loading and navigate to home
                     isLoading = false
                     loadingMessage = ""
                     onAuthenticationSuccess()
                 } else {
-                    Log.e("SignInScreen", "Authentication error: ${error.message}")
-                    // Stop loading on error
                     isLoading = false
                     loadingMessage = ""
-                }
-            }
-        }
-    }
-
-    // Login function with centralized loading management
-    fun login(loginParams: LoginParams, loginType: LoginType) {
-        // Set loading state with appropriate message
-        isLoading = true
-        loadingMessage = when (loginType) {
-            LoginType.EMAIL -> "Sending verification email..."
-            LoginType.GOOGLE -> "Connecting with Google..."
-            LoginType.METAMASK -> "Connecting with MetaMask..."
-        }
-
-        web3Auth.login(loginParams).whenComplete { result, error ->
-            if (error == null && result.userInfo != null) {
-                val userInfo = result.userInfo
-                Log.d("SignInScreen", "Login successful: $userInfo")
-                // Keep loading until navigation completes
-                onAuthenticationSuccess()
-            } else {
-                Log.e("SignInScreen", "Login error: ${error?.message}")
-                // Stop loading on error
-                isLoading = false
-                loadingMessage = ""
-
-                // Show error snackbar
-                CoroutineScope(Dispatchers.Main).launch {
                     snackbarHostState.showSnackbar(
-                        message = "Login failed: ${error?.message ?: "Unknown error"}",
+                        message = "Authentication failed: No user information received",
                         actionLabel = "OK",
-                        duration = SnackbarDuration.Short
+                        duration = SnackbarDuration.Long
                     )
                 }
             }
+            is Web3AuthState.Error -> {
+                isLoading = false
+                loadingMessage = ""
+                snackbarHostState.showSnackbar(
+                    message = "Sign in failed: ${currentState.message}",
+                    actionLabel = "OK",
+                    duration = SnackbarDuration.Long
+                )
+            }
+            is Web3AuthState.Idle -> {
+                // Do nothing, waiting for user action
+            }
         }
     }
 
-    // Separate function for email verification (not Web3Auth)
+    // Handle email submission
     fun handleEmailSubmission() {
         isLoading = true
         loadingMessage = "Preparing verification..."
@@ -302,7 +240,7 @@ fun SignInScreen(
                     enabled = !isLoading
                 )
 
-                // Submit Button - Now navigates to EmailVerificationScreen
+                // Submit Button
                 Button(
                     onClick = {
                         if (isValidEmail && !isLoading) {
@@ -362,12 +300,12 @@ fun SignInScreen(
                     )
                 }
 
-                // Continue with Google - Clean button, no loading
+                // Continue with Google
                 SignInButton(
                     text = "Continue with Google",
                     onClick = {
                         if (!isLoading) {
-                            login(LoginParams(Provider.GOOGLE), LoginType.GOOGLE)
+                            web3AuthManager.loginWithGoogle()
                         }
                     },
                     iconRes = com.loopr.R.drawable.google_logo,
@@ -377,18 +315,12 @@ fun SignInScreen(
                     enabled = !isLoading
                 )
 
-                // Continue with MetaMask - Clean button, no loading
+                // Continue with MetaMask (placeholder)
                 SignInButton(
                     text = "Continue with MetaMask",
                     onClick = {
                         if (!isLoading) {
-                            // For now, just show loading state
-                            isLoading = true
-                            loadingMessage = "MetaMask coming soon..."
                             CoroutineScope(Dispatchers.Main).launch {
-                                delay(2000)
-                                isLoading = false
-                                loadingMessage = ""
                                 snackbarHostState.showSnackbar(
                                     message = "MetaMask integration coming soon",
                                     actionLabel = "OK",
@@ -452,11 +384,6 @@ fun SignInScreen(
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
-}
-
-// Enum to track which login method is being used
-enum class LoginType {
-    EMAIL, GOOGLE, METAMASK
 }
 
 @Composable

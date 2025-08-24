@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
+import com.loopr.ui.presentation.screens.HomeScreen
 
 fun NavGraphBuilder.mainNavigation(
     navController: NavHostController,
@@ -23,7 +24,7 @@ fun NavGraphBuilder.mainNavigation(
         route = LooprDestinations.MAIN_GRAPH
     ) {
         composable(LooprDestinations.HOME) {
-            // Temporary HomeScreen until you create the actual one
+            // Use the actual HomeScreen from HomeScreen.kt
             HomeScreen()
         }
 
@@ -35,33 +36,6 @@ fun NavGraphBuilder.mainNavigation(
         composable(LooprDestinations.PROFILE) {
             // ProfileScreen(authViewModel = authViewModel) - Create this later
             // This screen can use authViewModel to show user profile and logout functionality
-        }
-    }
-}
-
-@Composable
-private fun HomeScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "🎉 Authentication Successful!",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Welcome to Loopr",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
         }
     }
 }
