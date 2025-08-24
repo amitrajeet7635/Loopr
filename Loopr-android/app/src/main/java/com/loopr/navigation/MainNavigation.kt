@@ -12,9 +12,11 @@ import androidx.navigation.navigation
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.loopr.ui.presentation.viewmodel.AuthViewModel
 
 fun NavGraphBuilder.mainNavigation(
-    navController: NavHostController
+    navController: NavHostController,
+    authViewModel: AuthViewModel
 ) {
     navigation(
         startDestination = LooprDestinations.HOME,
@@ -31,8 +33,8 @@ fun NavGraphBuilder.mainNavigation(
         }
 
         composable(LooprDestinations.PROFILE) {
-            // ProfileScreen() - Create this later
-            // Placeholder for now
+            // ProfileScreen(authViewModel = authViewModel) - Create this later
+            // This screen can use authViewModel to show user profile and logout functionality
         }
     }
 }
