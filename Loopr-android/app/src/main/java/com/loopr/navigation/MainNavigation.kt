@@ -24,8 +24,8 @@ fun NavGraphBuilder.mainNavigation(
         route = LooprDestinations.MAIN_GRAPH
     ) {
         composable(LooprDestinations.HOME) {
-            // Use the actual HomeScreen from HomeScreen.kt
-            HomeScreen()
+            // Use the actual HomeScreen from HomeScreen.kt with authViewModel
+            HomeScreen(authViewModel = authViewModel)
         }
 
         composable(LooprDestinations.SUBSCRIPTIONS) {
