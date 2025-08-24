@@ -2,6 +2,9 @@ package com.loopr.navigation
 
 // Navigation routes
 object LooprDestinations {
+    // Loading/Splash routes
+    const val LOADING = "loading"
+
     // Auth routes
     const val AUTH_GRAPH = "auth_graph"
     const val SIGN_IN = "sign_in"
