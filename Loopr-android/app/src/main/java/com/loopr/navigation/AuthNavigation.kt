@@ -1,7 +1,6 @@
 package com.loopr.navigation
 
 import android.net.Uri
-import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -10,6 +9,8 @@ import androidx.navigation.navigation
 import com.loopr.ui.presentation.screens.SignInScreen
 import com.loopr.ui.presentation.screens.EmailVerificationScreen
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
+import com.loopr.data.auth.Web3AuthManager
+import javax.inject.Inject
 
 fun NavGraphBuilder.authNavigation(
     navController: NavHostController,
@@ -24,17 +25,13 @@ fun NavGraphBuilder.authNavigation(
             LooprDestinations.SIGN_IN,
             deepLinks = listOf(navDeepLink { uriPattern = "com.loopr://auth" })
         ) {
+            // Get Web3AuthManager from the existing authViewModel since it already has access to it
             SignInScreen(
                 resultUri = deepLinkUri,
                 authViewModel = authViewModel,
+                web3AuthManager = authViewModel.web3AuthManager,
                 onEmailSubmitted = { email ->
                     navController.navigate("${LooprDestinations.EMAIL_VERIFICATION}/$email")
-                },
-                onGoogleSignIn = {
-                    // This will be handled by Web3AuthManager
-                },
-                onMetaMaskSignIn = {
-                    // Handle MetaMask sign in
                 },
                 onAuthenticationSuccess = {
                     // Navigate to main app when Web3Auth succeeds

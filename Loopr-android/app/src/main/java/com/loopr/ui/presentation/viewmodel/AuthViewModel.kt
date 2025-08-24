@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val web3AuthManager: Web3AuthManager
+    val web3AuthManager: Web3AuthManager  // Make this public so AuthNavigation can access it
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Loading)
