@@ -3,29 +3,81 @@ package com.loopr.ui.presentation.screens
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CardGiftcard
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Subscriptions
+import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
+import androidx.compose.material.icons.outlined.CardGiftcard
+import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Subscriptions
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,11 +86,12 @@ import coil3.compose.AsyncImage
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
+import com.loopr.ui.theme.LooprOrange
+import com.loopr.ui.theme.LooprOrangeVariant
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    authViewModel: AuthViewModel
+    modifier: Modifier = Modifier, authViewModel: AuthViewModel
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -50,9 +103,7 @@ fun HomeScreen(
         },
         bottomBar = {
             LooprBottomNavigationBar(
-                selectedTab = selectedTab,
-                onTabSelected = { selectedTab = it }
-            )
+                selectedTab = selectedTab, onTabSelected = { selectedTab = it })
         },
         contentWindowInsets = WindowInsets(0) // Remove default content insets to prevent double padding
     ) { paddingValues ->
@@ -82,13 +133,16 @@ fun HomeScreen(
 
 @Composable
 private fun LooprBottomNavigationBar(
-    selectedTab: Int,
-    onTabSelected: (Int) -> Unit
+    selectedTab: Int, onTabSelected: (Int) -> Unit
 ) {
     val navigationItems = listOf(
         BottomNavItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
         BottomNavItem("Subscriptions", Icons.Outlined.Subscriptions, Icons.Filled.Subscriptions),
-        BottomNavItem("Wallet", Icons.Outlined.AccountBalanceWallet, Icons.Filled.AccountBalanceWallet),
+        BottomNavItem(
+            "Wallet",
+            Icons.Outlined.AccountBalanceWallet,
+            Icons.Filled.AccountBalanceWallet
+        ),
         BottomNavItem("Rewards", Icons.Outlined.CardGiftcard, Icons.Filled.CardGiftcard)
     )
 
@@ -118,8 +172,7 @@ private fun LooprBottomNavigationBar(
                                 MaterialTheme.colorScheme.surface.copy(alpha = 0.98f),
                                 MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
                             )
-                        ),
-                        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+                        ), shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
                     )
             ) {
                 Row(
@@ -160,8 +213,7 @@ private fun LooprBottomNavigationBar(
                             modifier = Modifier
                                 .size(72.dp)
                                 .background(
-                                    Color.Transparent,
-                                    CircleShape
+                                    Color.Transparent, CircleShape
                                 )
                         )
                     }
@@ -203,9 +255,7 @@ private fun LooprBottomNavigationBar(
                 containerColor = LooprCyan,
                 contentColor = Color.White,
                 elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 16.dp,
-                    pressedElevation = 20.dp,
-                    hoveredElevation = 18.dp
+                    defaultElevation = 16.dp, pressedElevation = 20.dp, hoveredElevation = 18.dp
                 )
             ) {
                 Box(
@@ -214,14 +264,10 @@ private fun LooprBottomNavigationBar(
                         .background(
                             brush = Brush.radialGradient(
                                 colors = listOf(
-                                    LooprCyan,
-                                    LooprCyanVariant,
-                                    LooprCyan.copy(alpha = 0.9f)
+                                    LooprCyan, LooprCyanVariant, LooprCyan.copy(alpha = 0.9f)
                                 )
-                            ),
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
+                            ), shape = CircleShape
+                        ), contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Filled.QrCodeScanner,
@@ -243,33 +289,10 @@ private fun HomeContent() {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+
         item {
-            // Welcome Header
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(24.dp)
-                ) {
-                    Text(
-                        text = "Welcome back! 👋",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Manage your subscriptions effortlessly",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
+            // Overview Card - Hero Section
+            OverviewCard()
         }
 
         item {
@@ -286,7 +309,7 @@ private fun HomeContent() {
                 )
                 StatCard(
                     title = "Monthly",
-                    value = "$89",
+                    value = "₹89",
                     subtitle = "Total Cost",
                     modifier = Modifier.weight(1f)
                 )
@@ -306,17 +329,15 @@ private fun HomeContent() {
 
         items(3) { index ->
             ActivityCard(
-                title = when(index) {
+                title = when (index) {
                     0 -> "Netflix"
                     1 -> "Spotify Premium"
                     else -> "Adobe Creative"
-                },
-                amount = when(index) {
+                }, amount = when (index) {
                     0 -> "$15.99"
                     1 -> "$9.99"
                     else -> "$52.99"
-                },
-                date = when(index) {
+                }, date = when (index) {
                     0 -> "Today"
                     1 -> "Yesterday"
                     else -> "2 days ago"
@@ -418,22 +439,15 @@ private fun RewardsContent() {
 
 @Composable
 private fun StatCard(
-    title: String,
-    value: String,
-    subtitle: String,
-    modifier: Modifier = Modifier
+    title: String, value: String, subtitle: String, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
+        modifier = modifier, shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(
             containerColor = LooprCyan.copy(alpha = 0.05f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = title,
@@ -458,9 +472,7 @@ private fun StatCard(
 
 @Composable
 private fun ActivityCard(
-    title: String,
-    amount: String,
-    date: String
+    title: String, amount: String, date: String
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -502,10 +514,7 @@ private fun ActivityCard(
 
 @Composable
 private fun NavBarItem(
-    item: BottomNavItem,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    item: BottomNavItem, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     val animatedScale by animateFloatAsState(
         targetValue = if (isSelected) 1.1f else 1f,
@@ -514,32 +523,26 @@ private fun NavBarItem(
     )
 
     val animatedAlpha by animateFloatAsState(
-        targetValue = if (isSelected) 1f else 0.6f,
-        animationSpec = tween(200),
-        label = "alpha"
+        targetValue = if (isSelected) 1f else 0.6f, animationSpec = tween(200), label = "alpha"
     )
 
     Box(
         modifier = modifier
             .height(56.dp)
             .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) { onClick() },
-        contentAlignment = Alignment.Center
+                interactionSource = remember { MutableInteractionSource() }, indication = null
+            ) { onClick() }, contentAlignment = Alignment.Center
     ) {
         // Removed the circular background highlight structure
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .graphicsLayer {
+            modifier = Modifier.graphicsLayer {
                     scaleX = animatedScale
                     scaleY = animatedScale
                     alpha = animatedAlpha
-                }
-        ) {
+                }) {
             Icon(
                 imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
                 contentDescription = item.label,
@@ -562,9 +565,7 @@ private fun NavBarItem(
 }
 
 private data class BottomNavItem(
-    val label: String,
-    val unselectedIcon: ImageVector,
-    val selectedIcon: ImageVector
+    val label: String, val unselectedIcon: ImageVector, val selectedIcon: ImageVector
 )
 
 @Composable
@@ -580,8 +581,7 @@ private fun LooprTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding(), // Add status bar padding to prevent overlap
-        color = MaterialTheme.colorScheme.background,
-        shadowElevation = 4.dp
+        color = MaterialTheme.colorScheme.background, shadowElevation = 4.dp
     ) {
         Row(
             modifier = Modifier
@@ -603,8 +603,7 @@ private fun LooprTopAppBar(
                             brush = Brush.radialGradient(
                                 colors = listOf(LooprCyan, LooprCyanVariant)
                             )
-                        ),
-                    contentAlignment = Alignment.Center
+                        ), contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "L",
@@ -633,8 +632,7 @@ private fun LooprTopAppBar(
                         .background(
                             brush = Brush.radialGradient(
                                 colors = listOf(
-                                    LooprCyan.copy(alpha = 0.2f),
-                                    LooprCyan.copy(alpha = 0.1f)
+                                    LooprCyan.copy(alpha = 0.2f), LooprCyan.copy(alpha = 0.1f)
                                 )
                             )
                         )
@@ -655,8 +653,7 @@ private fun LooprTopAppBar(
                             contentScale = ContentScale.Crop,
                             onLoading = { isLoading = true; hasError = false },
                             onSuccess = { isLoading = false; hasError = false },
-                            onError = { isLoading = false; hasError = true }
-                        )
+                            onError = { isLoading = false; hasError = true })
 
                         if (isLoading || hasError) {
                             Icon(
@@ -683,82 +680,349 @@ private fun LooprTopAppBar(
                     onDismissRequest = { showDropdown = false },
                     modifier = Modifier.width(200.dp),
                     properties = PopupProperties(
-                        dismissOnBackPress = true,
-                        dismissOnClickOutside = true
+                        dismissOnBackPress = true, dismissOnClickOutside = true
                     )
                 ) {
                     // Account Name - Now using real data from DataStore
-                    DropdownMenuItem(
-                        text = {
-                            Column {
-                                Text(
-                                    text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.SemiBold,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        },
-                        onClick = { },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Filled.AccountCircle,
-                                contentDescription = null,
-                                tint = LooprCyan
+                    DropdownMenuItem(text = {
+                        Column {
+                            Text(
+                                text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                    )
+                    }, onClick = { }, leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Filled.AccountCircle,
+                            contentDescription = null,
+                            tint = LooprCyan
+                        )
+                    })
 
                     HorizontalDivider()
 
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Profile",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        },
-                        onClick = {
-                            showDropdown = false
-                            // TODO: Navigate to profile
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Person,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    )
+                    DropdownMenuItem(text = {
+                        Text(
+                            text = "Profile", style = MaterialTheme.typography.bodyLarge
+                        )
+                    }, onClick = {
+                        showDropdown = false
+                        // TODO: Navigate to profile
+                    }, leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    })
 
                     // Logout Option
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = "Logout",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        },
-                        onClick = {
-                            showDropdown = false
-                            // TODO: Handle logout functionality
-                        },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.ExitToApp,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
+                    DropdownMenuItem(text = {
+                        Text(
+                            text = "Logout",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }, onClick = {
+                        showDropdown = false
+                        // TODO: Handle logout functionality
+                    }, leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.ExitToApp,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    })
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OverviewCard() {
+    // Sample data - replace with actual data from your ViewModel/Repository
+    val totalSpent = 3200f
+    val monthlyBudget = 4000f
+    val isOverBudget = totalSpent > monthlyBudget
+    val budgetProgress = (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
+    val overAmount = if (isOverBudget) totalSpent - monthlyBudget else monthlyBudget - totalSpent
+    val percentageDifference = ((overAmount / monthlyBudget) * 100).toInt()
+    val monthOverMonthChange = 5f // 5% increase from last month (sample data)
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.05f)
+                        )
+                    )
+                )
+                .padding(32.dp)
+        ) {
+            // Header Section - Loopr branded
+            Column(
+            ) {
+                Text(
+                    text = "Here's your monthly spent on Loopr",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(
+                        text = "${String.format("%.2f", totalSpent)}",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Black,
+                        color = if (isOverBudget) MaterialTheme.colorScheme.error else LooprCyan
+                    )
+                    Text(
+                        text = "USDC",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isOverBudget) MaterialTheme.colorScheme.error else LooprCyan
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Glassmorphism Progress Bar
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(16.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color.White.copy(alpha = 0.1f),
+                                Color.White.copy(alpha = 0.05f),
+                                Color.White.copy(alpha = 0.1f)
+                            )
+                        )
+                    )
+                    .background(
+                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
+                    ),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                // Glass progress fill
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(budgetProgress)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(
+                            brush = if (isOverBudget) {
+                                Brush.linearGradient(
+                                    colors = listOf(
+                                        MaterialTheme.colorScheme.error.copy(alpha = 0.9f),
+                                        MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                                        MaterialTheme.colorScheme.error.copy(alpha = 0.9f)
+                                    )
+                                )
+                            } else {
+                                Brush.linearGradient(
+                                    colors = listOf(
+                                        LooprCyan.copy(alpha = 0.9f),
+                                        LooprCyan.copy(alpha = 0.6f),
+                                        LooprCyanVariant.copy(alpha = 0.8f)
+                                    )
+                                )
+                            }
+                        )
+                )
+
+                // Spending amount inside the progress bar
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "${String.format("%.0f", totalSpent)} USDC spent",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    if (budgetProgress < 1f) {
+                        Text(
+                            text = "${String.format("%.0f", monthlyBudget - totalSpent)} left",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                    }
+                }
+            }
+
+            // Budget status - only show when over budget
+            if (isOverBudget) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.08f)
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.error.copy(alpha = 0.15f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "⚠️",
+                                style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp)
+                            )
+                        }
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Budget Exceeded",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.error,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Over by ${String.format("%.2f", overAmount)} USDC",
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Simplified Spending Trend Section
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Enhanced trend icon with background
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .background(
+                            if (monthOverMonthChange > 0)
+                                LooprOrange.copy(alpha = 0.15f)
+                            else
+                                LooprCyan.copy(alpha = 0.15f)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = if (monthOverMonthChange > 0) Icons.Filled.TrendingUp else Icons.Filled.TrendingDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = if (monthOverMonthChange > 0) LooprOrange else LooprCyan
+                    )
+                }
+                Text(
+                    text = "${String.format("%.0f", kotlin.math.abs(monthOverMonthChange))}% ${if (monthOverMonthChange > 0) "more" else "less"} than last month",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MiniSparkline(
+    modifier: Modifier = Modifier,
+    trend: Boolean // true for upward, false for downward
+) {
+    Canvas(modifier = modifier) {
+        val width = size.width
+        val height = size.height
+        val strokeWidth = 3.dp.toPx()
+
+        // Sample data points for sparkline
+        val points = if (trend) {
+            listOf(
+                Offset(0f, height * 0.7f),
+                Offset(width * 0.2f, height * 0.6f),
+                Offset(width * 0.4f, height * 0.5f),
+                Offset(width * 0.6f, height * 0.4f),
+                Offset(width * 0.8f, height * 0.3f),
+                Offset(width, height * 0.2f)
+            )
+        } else {
+            listOf(
+                Offset(0f, height * 0.3f),
+                Offset(width * 0.2f, height * 0.4f),
+                Offset(width * 0.4f, height * 0.5f),
+                Offset(width * 0.6f, height * 0.6f),
+                Offset(width * 0.8f, height * 0.7f),
+                Offset(width, height * 0.8f)
+            )
+        }
+
+        // Draw the sparkline
+        val path = Path()
+        path.moveTo(points.first().x, points.first().y)
+        for (i in 1 until points.size) {
+            path.lineTo(points[i].x, points[i].y)
+        }
+
+        drawPath(
+            path = path,
+            color = if (trend) LooprOrange else LooprCyan,
+            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+        )
+
+        // Draw small circles at data points
+        points.forEach { point ->
+            drawCircle(
+                color = if (trend) LooprOrange else LooprCyan,
+                radius = strokeWidth / 2,
+                center = point
+            )
         }
     }
 }
