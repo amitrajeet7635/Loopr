@@ -1,26 +1,16 @@
-import { PaymentIntentConfig } from './src';
-import { createPaymentIntent } from './src/payment/createIntent';
-import * as QRCode from 'qrcode';
-
-
-
-const config: PaymentIntentConfig = {
-    recipient: 'FFp8CuPYT1qNGEVcKA8MWh4iyoNekhJaJati8LvyeXDo',
-    amount: 0.01,
-    frequency: 'monthly',
-    label: 'Loopr Pro Plan',
-    message: 'Thank you!',
-    metadata: {
-      planId: 'pro-monthly',
-      userId: 'user_abc_123',
-    },
-  };
+import { createPlanPaymentIntent } from './src/payment/createPlanPaymentIntent';
 
 (async () => {
-  const uri = createPaymentIntent(config);
-  console.log('Generated Solana Pay URI:', uri);
+  try {
+    const planId = 'pro-monthly';
+    const userId = 'user_abc_123';
 
-  await QRCode.toFile('loopr-payment.png', uri); 
-  console.log('✅ QR code saved as loopr-payment.png');
+    const { plan, intent, qrCode } = await createPlanPaymentIntent(planId, userId);
+
+    console.log('✅ Plan details:', plan);
+    console.log('✅ Generated Solana Pay URI:', intent);
+    console.log('✅ QR code generated:', typeof qrCode === 'string' ? 'Data URL' : 'Canvas element');
+  } catch (err) {
+    console.error('❌ Error creating payment intent:', err);
+  }
 })();
-
