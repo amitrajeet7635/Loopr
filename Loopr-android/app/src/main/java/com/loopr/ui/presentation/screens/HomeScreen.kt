@@ -23,11 +23,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import coil3.compose.AsyncImage
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
@@ -623,7 +626,6 @@ private fun LooprTopAppBar(
 
             // Account Avatar with Dropdown
             Box {
-                // Avatar
                 Box(
                     modifier = Modifier
                         .size(40.dp)
@@ -639,12 +641,40 @@ private fun LooprTopAppBar(
                         .clickable { showDropdown = !showDropdown },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "Account",
-                        tint = LooprCyan,
-                        modifier = Modifier.size(24.dp)
-                    )
+                    // AsyncImage to load and display the actual profile image from datastore
+                    if (userProfile.profileImageUrl.isNotEmpty()) {
+                        var isLoading by remember { mutableStateOf(true) }
+                        var hasError by remember { mutableStateOf(false) }
+
+                        AsyncImage(
+                            model = userProfile.profileImageUrl,
+                            contentDescription = "Account",
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop,
+                            onLoading = { isLoading = true; hasError = false },
+                            onSuccess = { isLoading = false; hasError = false },
+                            onError = { isLoading = false; hasError = true }
+                        )
+
+                        if (isLoading || hasError) {
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = "Account",
+                                tint = LooprCyan,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    } else {
+                        // Show default icon when no profile image URL is available
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Account",
+                            tint = LooprCyan,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
                 }
 
                 // Dropdown Menu with real user data
@@ -686,7 +716,6 @@ private fun LooprTopAppBar(
 
                     HorizontalDivider()
 
-                    // Profile Option
                     DropdownMenuItem(
                         text = {
                             Text(
