@@ -41,12 +41,14 @@ fun NavGraphBuilder.mainNavigation(
         }
 
         composable("qr_scanner") {
-
-            QrScannerScreen { scannedUri ->
-                if (scannedUri.startsWith("loopr://")) {
-                    navController.navigate("autopay")
-                }
-            }
+            QrScannerScreen(
+                onQrScanned = { scannedUri ->
+                    if (scannedUri.startsWith("loopr://")) {
+                        navController.navigate("autopay")
+                    }
+                },
+                navController = navController // Pass the navController to QrScannerScreen
+            )
         }
 
         composable("autopay") {
