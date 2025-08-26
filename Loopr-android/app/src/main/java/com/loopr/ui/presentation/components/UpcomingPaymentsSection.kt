@@ -196,7 +196,6 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
             .width(190.dp)
             .height(160.dp),
         shape = RoundedCornerShape(26.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
 
