@@ -112,7 +112,7 @@ fun HomeScreen(
         ) {
             when (selectedTab) {
                 0 -> HomeContent(authViewModel)
-                1 -> SubscriptionsContent()
+                1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
             }
@@ -293,35 +293,6 @@ private fun HomeContent(authViewModel: AuthViewModel) {
     }
 }
 
-@Composable
-private fun SubscriptionsContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Subscriptions,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = LooprCyan
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Subscriptions",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = "Coming Soon",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
 
 @Composable
 private fun WalletContent() {
