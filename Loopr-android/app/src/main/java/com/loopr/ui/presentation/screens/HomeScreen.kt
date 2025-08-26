@@ -3,7 +3,6 @@ package com.loopr.ui.presentation.screens
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,7 +22,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,8 +32,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Subscriptions
-import androidx.compose.material.icons.filled.TrendingDown
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.CardGiftcard
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -44,16 +40,13 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Subscriptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -67,12 +60,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -83,11 +72,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import coil3.compose.AsyncImage
+import com.loopr.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
-import com.loopr.ui.theme.LooprOrange
-import com.loopr.ui.theme.LooprOrangeVariant
 
 @Composable
 fun HomeScreen(
@@ -139,9 +127,7 @@ private fun LooprBottomNavigationBar(
         BottomNavItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
         BottomNavItem("Subscriptions", Icons.Outlined.Subscriptions, Icons.Filled.Subscriptions),
         BottomNavItem(
-            "Wallet",
-            Icons.Outlined.AccountBalanceWallet,
-            Icons.Filled.AccountBalanceWallet
+            "Wallet", Icons.Outlined.AccountBalanceWallet, Icons.Filled.AccountBalanceWallet
         ),
         BottomNavItem("Rewards", Icons.Outlined.CardGiftcard, Icons.Filled.CardGiftcard)
     )
@@ -296,53 +282,8 @@ private fun HomeContent() {
         }
 
         item {
-            // Quick Stats
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                StatCard(
-                    title = "Active",
-                    value = "12",
-                    subtitle = "Subscriptions",
-                    modifier = Modifier.weight(1f)
-                )
-                StatCard(
-                    title = "Monthly",
-                    value = "₹89",
-                    subtitle = "Total Cost",
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
-
-        item {
-            // Recent Activity
-            Text(
-                text = "Recent Activity",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
-        }
-
-        items(3) { index ->
-            ActivityCard(
-                title = when (index) {
-                    0 -> "Netflix"
-                    1 -> "Spotify Premium"
-                    else -> "Adobe Creative"
-                }, amount = when (index) {
-                    0 -> "$15.99"
-                    1 -> "$9.99"
-                    else -> "$52.99"
-                }, date = when (index) {
-                    0 -> "Today"
-                    1 -> "Yesterday"
-                    else -> "2 days ago"
-                }
-            )
+            // Upcoming Payments Section
+            UpcomingPaymentsSection()
         }
     }
 }
@@ -539,10 +480,10 @@ private fun NavBarItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.graphicsLayer {
-                    scaleX = animatedScale
-                    scaleY = animatedScale
-                    alpha = animatedAlpha
-                }) {
+                scaleX = animatedScale
+                scaleY = animatedScale
+                alpha = animatedAlpha
+            }) {
             Icon(
                 imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
                 contentDescription = item.label,
@@ -752,10 +693,10 @@ private fun OverviewCard() {
     val totalSpent = 3200f
     val monthlyBudget = 4000f
     val isOverBudget = totalSpent > monthlyBudget
-    val budgetProgress = (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
+    val budgetProgress =
+        (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
     val overAmount = if (isOverBudget) totalSpent - monthlyBudget else monthlyBudget - totalSpent
-    val percentageDifference = ((overAmount / monthlyBudget) * 100).toInt()
-    val monthOverMonthChange = 5f // 5% increase from last month (sample data)
+    ((overAmount / monthlyBudget) * 100).toInt()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -780,8 +721,7 @@ private fun OverviewCard() {
                 .padding(32.dp)
         ) {
             // Header Section - Loopr branded
-            Column(
-            ) {
+            Column {
                 Text(
                     text = "Here's your monthly spent on Loopr",
                     style = MaterialTheme.typography.titleMedium,
@@ -828,8 +768,7 @@ private fun OverviewCard() {
                     )
                     .background(
                         MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
-                    ),
-                contentAlignment = Alignment.CenterStart
+                    ), contentAlignment = Alignment.CenterStart
             ) {
                 // Glass progress fill
                 Box(
@@ -933,96 +872,8 @@ private fun OverviewCard() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Simplified Spending Trend Section
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                // Enhanced trend icon with background
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(CircleShape)
-                        .background(
-                            if (monthOverMonthChange > 0)
-                                LooprOrange.copy(alpha = 0.15f)
-                            else
-                                LooprCyan.copy(alpha = 0.15f)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = if (monthOverMonthChange > 0) Icons.Filled.TrendingUp else Icons.Filled.TrendingDown,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = if (monthOverMonthChange > 0) LooprOrange else LooprCyan
-                    )
-                }
-                Text(
-                    text = "${String.format("%.0f", kotlin.math.abs(monthOverMonthChange))}% ${if (monthOverMonthChange > 0) "more" else "less"} than last month",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
-@Composable
-private fun MiniSparkline(
-    modifier: Modifier = Modifier,
-    trend: Boolean // true for upward, false for downward
-) {
-    Canvas(modifier = modifier) {
-        val width = size.width
-        val height = size.height
-        val strokeWidth = 3.dp.toPx()
-
-        // Sample data points for sparkline
-        val points = if (trend) {
-            listOf(
-                Offset(0f, height * 0.7f),
-                Offset(width * 0.2f, height * 0.6f),
-                Offset(width * 0.4f, height * 0.5f),
-                Offset(width * 0.6f, height * 0.4f),
-                Offset(width * 0.8f, height * 0.3f),
-                Offset(width, height * 0.2f)
-            )
-        } else {
-            listOf(
-                Offset(0f, height * 0.3f),
-                Offset(width * 0.2f, height * 0.4f),
-                Offset(width * 0.4f, height * 0.5f),
-                Offset(width * 0.6f, height * 0.6f),
-                Offset(width * 0.8f, height * 0.7f),
-                Offset(width, height * 0.8f)
-            )
-        }
-
-        // Draw the sparkline
-        val path = Path()
-        path.moveTo(points.first().x, points.first().y)
-        for (i in 1 until points.size) {
-            path.lineTo(points[i].x, points[i].y)
-        }
-
-        drawPath(
-            path = path,
-            color = if (trend) LooprOrange else LooprCyan,
-            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-        )
-
-        // Draw small circles at data points
-        points.forEach { point ->
-            drawCircle(
-                color = if (trend) LooprOrange else LooprCyan,
-                radius = strokeWidth / 2,
-                center = point
-            )
-        }
-    }
-}
