@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CardGiftcard
@@ -40,7 +39,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Subscriptions
 import androidx.compose.material.icons.outlined.TrendingDown
-import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -117,7 +115,7 @@ fun HomeScreen(
         ) {
             when (selectedTab) {
                 0 -> HomeContent()
-                1 -> SubscriptionsContent()
+                1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
             }
@@ -295,35 +293,6 @@ private fun HomeContent() {
     }
 }
 
-@Composable
-private fun SubscriptionsContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Subscriptions,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = LooprCyan
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Subscriptions",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Text(
-            text = "Coming Soon",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
 
 @Composable
 private fun WalletContent() {
@@ -459,7 +428,8 @@ private fun LooprTopAppBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp).padding(top = 16.dp),
+                .padding(horizontal = 20.dp)
+                .padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -625,13 +595,15 @@ private fun OverviewCard() {
     val totalSpent = 3200f
     val monthlyBudget = 4000f
     val isOverBudget = totalSpent > monthlyBudget
-    val budgetProgress =
-        (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
+    (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
     val overAmount = if (isOverBudget) totalSpent - monthlyBudget else monthlyBudget - totalSpent
     ((overAmount / monthlyBudget) * 100).toInt()
 
     Card(
-        modifier = Modifier.clip(RoundedCornerShape(28.dp)).glassEffect(28.dp).fillMaxWidth(),
+        modifier = Modifier
+            .clip(RoundedCornerShape(28.dp))
+            .glassEffect(28.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -718,7 +690,12 @@ private fun OverviewCard() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "You are over your budget by ${String.format("%.2f", overAmount)} USDC",
+                        text = "You are over your budget by ${
+                            String.format(
+                                "%.2f",
+                                overAmount
+                            )
+                        } USDC",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.error,
@@ -729,8 +706,13 @@ private fun OverviewCard() {
                 // Show like Spending stats - 5% less than prev month with Icon
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Row{
-                    Icon(Icons.Outlined.TrendingDown, contentDescription = null, tint = LooprCyan, modifier = Modifier.size(20.dp))
+                Row {
+                    Icon(
+                        Icons.Outlined.TrendingDown,
+                        contentDescription = null,
+                        tint = LooprCyan,
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "5% less than prev month",
