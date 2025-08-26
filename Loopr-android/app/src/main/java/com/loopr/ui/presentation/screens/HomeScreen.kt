@@ -25,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CardGiftcard
@@ -40,7 +39,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Subscriptions
 import androidx.compose.material.icons.outlined.TrendingDown
-import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -92,9 +90,6 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            LooprTopAppBar(authViewModel = authViewModel)
-        },
         bottomBar = {
             LooprBottomNavigationBar(
                 selectedTab = selectedTab, onTabSelected = { selectedTab = it })
@@ -116,7 +111,7 @@ fun HomeScreen(
                 )
         ) {
             when (selectedTab) {
-                0 -> HomeContent()
+                0 -> HomeContent(authViewModel)
                 1 -> SubscriptionsContent()
                 2 -> WalletContent()
                 3 -> RewardsContent()
@@ -275,13 +270,16 @@ private fun LooprBottomNavigationBar(
 }
 
 @Composable
-private fun HomeContent() {
+private fun HomeContent(authViewModel: AuthViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item {
+            LooprTopAppBar(authViewModel = authViewModel)
+        }
 
         item {
             // Overview Card - Hero Section
@@ -450,94 +448,76 @@ private fun LooprTopAppBar(
     // Collect user profile data from AuthViewModel
     val userProfile by authViewModel.userProfile.collectAsState()
 
-    Surface(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding(), // Add status bar padding to prevent overlap
-        color = MaterialTheme.colorScheme.background
+            .statusBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        // Loopr Logo/Brand
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp).padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Loopr Logo/Brand
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            // Logo placeholder - will be replaced with actual logo later
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(LooprCyan, LooprCyanVariant)
+                        )
+                    ), contentAlignment = Alignment.Center
             ) {
-                // Logo placeholder - will be replaced with actual logo later
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(LooprCyan, LooprCyanVariant)
-                            )
-                        ), contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "L",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
                 Text(
-                    text = "Loopr",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    text = "L", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White
                 )
             }
 
-            // Account Avatar with Dropdown
-            Box {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    LooprCyan.copy(alpha = 0.2f), LooprCyan.copy(alpha = 0.1f)
-                                )
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Text(
+                text = "Loopr",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
+        // Account Avatar with Dropdown
+        Box {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                LooprCyan.copy(alpha = 0.2f), LooprCyan.copy(alpha = 0.1f)
                             )
                         )
-                        .clickable { showDropdown = !showDropdown },
-                    contentAlignment = Alignment.Center
-                ) {
-                    // AsyncImage to load and display the actual profile image from datastore
-                    if (userProfile.profileImageUrl.isNotEmpty()) {
-                        var isLoading by remember { mutableStateOf(true) }
-                        var hasError by remember { mutableStateOf(false) }
+                    )
+                    .clickable { showDropdown = !showDropdown },
+                contentAlignment = Alignment.Center
+            ) {
+                // AsyncImage to load and display the actual profile image from datastore
+                if (userProfile.profileImageUrl.isNotEmpty()) {
+                    var isLoading by remember { mutableStateOf(true) }
+                    var hasError by remember { mutableStateOf(false) }
 
-                        AsyncImage(
-                            model = userProfile.profileImageUrl,
-                            contentDescription = "Account",
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop,
-                            onLoading = { isLoading = true; hasError = false },
-                            onSuccess = { isLoading = false; hasError = false },
-                            onError = { isLoading = false; hasError = true })
+                    AsyncImage(
+                        model = userProfile.profileImageUrl,
+                        contentDescription = "Account",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        onLoading = { isLoading = true; hasError = false },
+                        onSuccess = { isLoading = false; hasError = false },
+                        onError = { isLoading = false; hasError = true })
 
-                        if (isLoading || hasError) {
-                            Icon(
-                                imageVector = Icons.Filled.Person,
-                                contentDescription = "Account",
-                                tint = LooprCyan,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    } else {
-                        // Show default icon when no profile image URL is available
+                    if (isLoading || hasError) {
                         Icon(
                             imageVector = Icons.Filled.Person,
                             contentDescription = "Account",
@@ -545,78 +525,87 @@ private fun LooprTopAppBar(
                             modifier = Modifier.size(24.dp)
                         )
                     }
-                }
-
-                // Dropdown Menu with real user data
-                DropdownMenu(
-                    expanded = showDropdown,
-                    onDismissRequest = { showDropdown = false },
-                    modifier = Modifier.width(200.dp),
-                    properties = PopupProperties(
-                        dismissOnBackPress = true, dismissOnClickOutside = true
+                } else {
+                    // Show default icon when no profile image URL is available
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "Account",
+                        tint = LooprCyan,
+                        modifier = Modifier.size(24.dp)
                     )
-                ) {
-                    // Account Name - Now using real data from DataStore
-                    DropdownMenuItem(text = {
-                        Column {
-                            Text(
-                                text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                            Text(
-                                text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }, onClick = { }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = null,
-                            tint = LooprCyan
-                        )
-                    })
-
-                    HorizontalDivider()
-
-                    DropdownMenuItem(text = {
-                        Text(
-                            text = "Profile", style = MaterialTheme.typography.bodyLarge
-                        )
-                    }, onClick = {
-                        showDropdown = false
-                        // TODO: Navigate to profile
-                    }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Person,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    })
-
-                    // Logout Option
-                    DropdownMenuItem(text = {
-                        Text(
-                            text = "Logout",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }, onClick = {
-                        showDropdown = false
-                        // TODO: Handle logout functionality
-                    }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.ExitToApp,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    })
                 }
+            }
+
+            // Dropdown Menu with real user data
+            DropdownMenu(
+                expanded = showDropdown,
+                onDismissRequest = { showDropdown = false },
+                modifier = Modifier.width(200.dp),
+                properties = PopupProperties(
+                    dismissOnBackPress = true, dismissOnClickOutside = true
+                )
+            ) {
+                // Account Name - Now using real data from DataStore
+                DropdownMenuItem(text = {
+                    Column {
+                        Text(
+                            text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }, onClick = { }, leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = null,
+                        tint = LooprCyan
+                    )
+                })
+
+                HorizontalDivider()
+
+                DropdownMenuItem(text = {
+                    Text(
+                        text = "Profile", style = MaterialTheme.typography.bodyLarge
+                    )
+                }, onClick = {
+                    showDropdown = false
+                    // TODO: Navigate to profile
+                }, leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                })
+
+                // Logout Option
+                DropdownMenuItem(text = {
+                    Text(
+                        text = "Logout",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }, onClick = {
+                    showDropdown = false
+                    // TODO: Handle logout functionality
+                }, leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.ExitToApp,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                })
             }
         }
     }
+
 }
 
 @Composable
@@ -625,13 +614,15 @@ private fun OverviewCard() {
     val totalSpent = 3200f
     val monthlyBudget = 4000f
     val isOverBudget = totalSpent > monthlyBudget
-    val budgetProgress =
-        (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
+    (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
     val overAmount = if (isOverBudget) totalSpent - monthlyBudget else monthlyBudget - totalSpent
     ((overAmount / monthlyBudget) * 100).toInt()
 
     Card(
-        modifier = Modifier.clip(RoundedCornerShape(28.dp)).glassEffect(28.dp).fillMaxWidth(),
+        modifier = Modifier
+            .clip(RoundedCornerShape(28.dp))
+            .glassEffect(28.dp)
+            .fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -718,7 +709,12 @@ private fun OverviewCard() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "You are over your budget by ${String.format("%.2f", overAmount)} USDC",
+                        text = "You are over your budget by ${
+                            String.format(
+                                "%.2f",
+                                overAmount
+                            )
+                        } USDC",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.error,
@@ -729,8 +725,13 @@ private fun OverviewCard() {
                 // Show like Spending stats - 5% less than prev month with Icon
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Row{
-                    Icon(Icons.Outlined.TrendingDown, contentDescription = null, tint = LooprCyan, modifier = Modifier.size(20.dp))
+                Row {
+                    Icon(
+                        Icons.Outlined.TrendingDown,
+                        contentDescription = null,
+                        tint = LooprCyan,
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "5% less than prev month",
