@@ -93,7 +93,7 @@ fun HomeScreen(
             LooprBottomNavigationBar(
                 selectedTab = selectedTab, onTabSelected = { selectedTab = it })
         },
-        contentWindowInsets = WindowInsets(0) // Remove default content insets to prevent double padding
+        contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
         // Main content based on selected tab
         Column(
@@ -379,81 +379,6 @@ private fun RewardsContent() {
 }
 
 @Composable
-private fun StatCard(
-    title: String, value: String, subtitle: String, modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier, shape = RoundedCornerShape(16.dp), colors = CardDefaults.cardColors(
-            containerColor = LooprCyan.copy(alpha = 0.05f)
-        ), elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = value,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = LooprCyan
-            )
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
-private fun ActivityCard(
-    title: String, amount: String, date: String
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Text(
-                text = amount,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = LooprCyan
-            )
-        }
-    }
-}
-
-@Composable
 private fun NavBarItem(
     item: BottomNavItem, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier
 ) {
@@ -522,12 +447,12 @@ private fun LooprTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding(), // Add status bar padding to prevent overlap
-        color = MaterialTheme.colorScheme.background, shadowElevation = 4.dp
+        color = MaterialTheme.colorScheme.background
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 20.dp).padding(top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -703,8 +628,7 @@ private fun OverviewCard() {
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp)
+        )
     ) {
         Column(
             modifier = Modifier
