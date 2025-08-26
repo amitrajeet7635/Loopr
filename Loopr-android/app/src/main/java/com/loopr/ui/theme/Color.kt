@@ -7,6 +7,12 @@ val LooprCyan = Color(0xFF83F0FF)
 val LooprCyanVariant = Color(0xFF4DD0E1)
 val LooprDarkCyan = Color(0xFF00BCD4)
 
+// Loopr Secondary Colors
+val LooprOrange = Color(0xFFFF8A65)           // Dark theme secondary
+val LooprOrangeVariant = Color(0xFFFF7043)   // Dark theme secondary variant
+val LooprOrangeLight = Color(0xFFFFB74D)     // Light theme secondary
+val LooprOrangeLightVariant = Color(0xFFFF9800) // Light theme secondary variant
+
 // Dark Theme Colors
 val DarkBackground = Color(0xFF0D1117)
 val DarkSurface = Color(0xFF161B22)

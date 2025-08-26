@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id ("com.google.devtools.ksp")
     id ("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
 }
 
 android {
@@ -81,4 +82,14 @@ dependencies {
 
     // Encrypted SharedPreferences for secure Web3Auth session storage
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+
+    // QR Code Scanner
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+    // Accompanist Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.37.3")
 }
