@@ -12,8 +12,10 @@ import androidx.navigation.navigation
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.loopr.ui.presentation.screens.AutoPayScreen
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.presentation.screens.HomeScreen
+import com.loopr.ui.presentation.screens.QrScannerScreen
 
 fun NavGraphBuilder.mainNavigation(
     navController: NavHostController,
@@ -25,7 +27,7 @@ fun NavGraphBuilder.mainNavigation(
     ) {
         composable(LooprDestinations.HOME) {
             // Use the actual HomeScreen from HomeScreen.kt with authViewModel
-            HomeScreen(authViewModel = authViewModel)
+            HomeScreen(authViewModel = authViewModel, navController = navController)
         }
 
         composable(LooprDestinations.SUBSCRIPTIONS) {
@@ -36,6 +38,19 @@ fun NavGraphBuilder.mainNavigation(
         composable(LooprDestinations.PROFILE) {
             // ProfileScreen(authViewModel = authViewModel) - Create this later
             // This screen can use authViewModel to show user profile and logout functionality
+        }
+
+        composable("qr_scanner") {
+
+            QrScannerScreen { scannedUri ->
+                if (scannedUri.startsWith("loopr://")) {
+                    navController.navigate("autopay")
+                }
+            }
+        }
+
+        composable("autopay") {
+            AutoPayScreen()
         }
     }
 }

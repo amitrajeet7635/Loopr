@@ -80,10 +80,11 @@ import com.loopr.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.ui.theme.LooprCyan
 import com.loopr.ui.theme.LooprCyanVariant
+import androidx.navigation.NavController
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier, authViewModel: AuthViewModel
+    modifier: Modifier = Modifier, authViewModel: AuthViewModel, navController: NavController
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -92,7 +93,7 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             LooprBottomNavigationBar(
-                selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+                selectedTab = selectedTab, onTabSelected = { selectedTab = it }, navController)
         },
         contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
@@ -123,7 +124,7 @@ fun HomeScreen(
 
 @Composable
 private fun LooprBottomNavigationBar(
-    selectedTab: Int, onTabSelected: (Int) -> Unit
+    selectedTab: Int, onTabSelected: (Int) -> Unit, navController: NavController
 ) {
     val navigationItems = listOf(
         BottomNavItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
@@ -237,7 +238,7 @@ private fun LooprBottomNavigationBar(
         ) {
             // Enhanced FAB with better integration
             FloatingActionButton(
-                onClick = { /* TODO: Implement QR scan */ },
+                onClick = { navController.navigate("qr_scanner") },
                 modifier = Modifier.size(68.dp),
                 shape = CircleShape,
                 containerColor = LooprCyan,
