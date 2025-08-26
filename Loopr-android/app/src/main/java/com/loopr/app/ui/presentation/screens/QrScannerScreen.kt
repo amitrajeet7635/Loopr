@@ -36,10 +36,11 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.CompoundBarcodeView
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun QrScannerScreen(onQrScanned: (String) -> Unit) {
+fun QrScannerScreen(onQrScanned: (String) -> Unit, navController: NavController) {
     val context = LocalContext.current
     val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
 
@@ -178,7 +179,7 @@ fun QrScannerScreen(onQrScanned: (String) -> Unit) {
                     .padding(bottom = 32.dp)
                     .clip(CircleShape)
                     .background(Color.White)
-                    .clickable { onQrScanned("") } // Handle cancel action
+                    .clickable { navController.popBackStack() } // Navigate back to the home screen
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
