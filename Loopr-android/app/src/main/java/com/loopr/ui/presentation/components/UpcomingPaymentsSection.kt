@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -50,7 +49,6 @@ import androidx.core.graphics.ColorUtils
 import com.loopr.data.model.Subscription
 import com.loopr.ui.theme.LooprDarkCyan
 import kotlinx.serialization.json.Json
-import java.nio.file.WatchEvent
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -75,7 +73,7 @@ fun UpcomingPaymentsSection() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row (horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()){
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "Upcoming Payments",
                 fontSize = 18.sp,

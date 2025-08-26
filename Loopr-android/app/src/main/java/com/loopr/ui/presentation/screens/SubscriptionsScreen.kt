@@ -5,5 +5,6 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SubscriptionsScreen(modifier: Modifier = Modifier) {
-    
+
 }
+
