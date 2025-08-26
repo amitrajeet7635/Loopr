@@ -29,13 +29,22 @@ export default {
   plugins: [
     resolve({
       browser: true,
-      preferBuiltins: false
+      preferBuiltins: false,
+      // Add buffer polyfill resolution
+      alias: {
+        buffer: 'buffer'
+      }
     }),
-    commonjs(),
+    commonjs({
+      // Include buffer in commonjs transformation
+      include: ['node_modules/**'],
+    }),
     typescript({
       typescript: require('typescript'),
       tsconfig: './tsconfig.json',
-      useTsconfigDeclarationDir: true
+      declaration: true,
+      declarationDir: 'dist',
+      useTsconfigDeclarationDir: false
     }),
     terser()
   ]

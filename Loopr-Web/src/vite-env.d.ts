@@ -2,12 +2,10 @@
 
 declare global {
   interface Window {
-    Buffer: typeof Buffer;
-    process: any;
+    Buffer: typeof import('buffer').Buffer;
+    process: {
+      env: Record<string, string | undefined>;
+    };
   }
-  
-  var Buffer: typeof Buffer;
-  var process: any;
+  var Buffer: typeof import('buffer').Buffer;
 }
-
-export {};

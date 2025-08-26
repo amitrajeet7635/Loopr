@@ -19,7 +19,6 @@
     "rollup": "^2.79.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
@@ -27,7 +26,7 @@
     "@solana/web3.js": "^1.98.4",
     "@types/react": "^19.1.11",
     "bignumber.js": "^9.3.1",
-    "ethers": "^6.15.0",
+    "buffer": "^6.0.3",
     "qrcode": "^1.5.4",
     "react": "^19.1.1"
   }

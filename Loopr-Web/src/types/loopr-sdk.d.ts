@@ -22,7 +22,7 @@ declare module 'loopr-sdk' {
     metadata?: {
       planId?: string;
       userId?: string;
-      [key: string]: any;
+      [key: string]: unknown;
     };
   }
 
