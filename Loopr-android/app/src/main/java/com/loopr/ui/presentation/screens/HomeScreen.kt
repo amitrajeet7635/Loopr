@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -52,6 +53,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -90,9 +92,6 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            LooprTopAppBar(authViewModel = authViewModel)
-        },
         bottomBar = {
             LooprBottomNavigationBar(
                 selectedTab = selectedTab, onTabSelected = { selectedTab = it })
@@ -114,7 +113,7 @@ fun HomeScreen(
                 )
         ) {
             when (selectedTab) {
-                0 -> HomeContent()
+                0 -> HomeContent(authViewModel)
                 1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
@@ -273,13 +272,16 @@ private fun LooprBottomNavigationBar(
 }
 
 @Composable
-private fun HomeContent() {
+private fun HomeContent(authViewModel: AuthViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        item{
+            LooprTopAppBar(authViewModel = authViewModel)
+        }
 
         item {
             // Overview Card - Hero Section
@@ -419,17 +421,10 @@ private fun LooprTopAppBar(
     // Collect user profile data from AuthViewModel
     val userProfile by authViewModel.userProfile.collectAsState()
 
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding(), // Add status bar padding to prevent overlap
-        color = MaterialTheme.colorScheme.background
-    ) {
+
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 16.dp),
+            modifier = Modifier.statusBarsPadding()
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -586,7 +581,7 @@ private fun LooprTopAppBar(
                 }
             }
         }
-    }
+
 }
 
 @Composable
