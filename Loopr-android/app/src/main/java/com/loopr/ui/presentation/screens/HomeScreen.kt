@@ -4,6 +4,7 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CardGiftcard
@@ -38,6 +39,8 @@ import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Subscriptions
+import androidx.compose.material.icons.outlined.TrendingDown
+import androidx.compose.material.icons.outlined.TrendingUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -46,6 +49,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -62,12 +66,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
@@ -118,6 +124,7 @@ fun HomeScreen(
         }
     }
 }
+
 
 @Composable
 private fun LooprBottomNavigationBar(
@@ -624,7 +631,7 @@ private fun OverviewCard() {
     ((overAmount / monthlyBudget) * 100).toInt()
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.clip(RoundedCornerShape(28.dp)).glassEffect(28.dp).fillMaxWidth(),
         shape = RoundedCornerShape(28.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -649,7 +656,7 @@ private fun OverviewCard() {
                 Text(
                     text = "Here's your monthly spent on Loopr",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.inverseSurface,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
                 )
@@ -674,130 +681,84 @@ private fun OverviewCard() {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Glassmorphism Progress Bar
-            Box(
+            LinearProgressIndicator(
+                color = Color(0xFFFFFFFF),
+                trackColor = Color(0xFF7A89D8),
+                progress = { 0.53f },
+                strokeCap = StrokeCap.Square,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color.White.copy(alpha = 0.1f),
-                                Color.White.copy(alpha = 0.05f),
-                                Color.White.copy(alpha = 0.1f)
-                            )
-                        )
-                    )
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f)
-                    ), contentAlignment = Alignment.CenterStart
-            ) {
-                // Glass progress fill
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth(budgetProgress)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            brush = if (isOverBudget) {
-                                Brush.linearGradient(
-                                    colors = listOf(
-                                        MaterialTheme.colorScheme.error.copy(alpha = 0.9f),
-                                        MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
-                                        MaterialTheme.colorScheme.error.copy(alpha = 0.9f)
-                                    )
-                                )
-                            } else {
-                                Brush.linearGradient(
-                                    colors = listOf(
-                                        LooprCyan.copy(alpha = 0.9f),
-                                        LooprCyan.copy(alpha = 0.6f),
-                                        LooprCyanVariant.copy(alpha = 0.8f)
-                                    )
-                                )
-                            }
-                        )
-                )
+                    .clip(RoundedCornerShape(50.dp))
+                    .height(12.dp),
+                drawStopIndicator = {})
 
-                // Spending amount inside the progress bar
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "${String.format("%.0f", totalSpent)} USDC spent",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    if (budgetProgress < 1f) {
-                        Text(
-                            text = "${String.format("%.0f", monthlyBudget - totalSpent)} left",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.White.copy(alpha = 0.9f)
-                        )
-                    }
-                }
-            }
+            Text(
+                "You have spent ~53.81%",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.inverseSurface,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
 
             // Budget status - only show when over budget
             if (isOverBudget) {
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Card(
+                Spacer(modifier = Modifier.height(16.dp))
+                //BudgetCrossed with Icon high rising
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.error.copy(alpha = 0.08f)
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.error.copy(alpha = 0.15f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "⚠️",
-                                style = MaterialTheme.typography.headlineMedium.copy(fontSize = 24.sp)
-                            )
-                        }
-
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "Budget Exceeded",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.error,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Over by ${String.format("%.2f", overAmount)} USDC",
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                    }
+                    Icon(
+                        imageVector = Icons.Filled.AccountBalanceWallet,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "You are over your budget by ${String.format("%.2f", overAmount)} USDC",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center
+                    )
                 }
+            } else {
+                // Show like Spending stats - 5% less than prev month with Icon
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row{
+                    Icon(Icons.Outlined.TrendingDown, contentDescription = null, tint = LooprCyan, modifier = Modifier.size(20.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "5% less than prev month",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
+fun Modifier.glassEffect(roundedCorner: Dp) = this
+    .background(
+        brush = Brush.verticalGradient(
+            colors = listOf(
+                Color.White.copy(alpha = 0.25f), Color.White.copy(alpha = 0.15f)
+            )
+        )
+    )
+    .border(
+        width = 1.dp, brush = Brush.verticalGradient(
+            colors = listOf(
+                Color.White.copy(alpha = 0.4f), Color.White.copy(alpha = 0.1f)
+            )
+        ), shape = RoundedCornerShape(roundedCorner)
+    )
