@@ -1,0 +1,62 @@
+[
+  {
+    "merchant": "Netflix",
+    "logo": "netflix.png",
+    "color": "#E50914",
+    "plan": "Standard",
+    "price": 17.99,
+    "currency": "USD",
+    "frequency": "Monthly",
+    "nextDueDate": "2025-10-01"
+  },
+  {
+    "merchant": "Spotify",
+    "logo": "spotify.png",
+    "color": "#1DB954",
+    "plan": "Premium Individual",
+    "price": 11.99,
+    "currency": "USD",
+    "frequency": "Monthly",
+    "nextDueDate": "2025-09-30"
+  },
+  {
+    "merchant": "Disney+",
+    "logo": "disney.png",
+    "color": "#113CCF",
+    "plan": "Premium (Ad-Free)",
+    "price": 159.99,
+    "currency": "USD",
+    "frequency": "Yearly",
+    "nextDueDate": "2026-09-01"
+  },
+  {
+    "merchant": "Amazon Prime Video",
+    "logo": "prime.png",
+    "color": "#00A8E1",
+    "plan": "Prime Video Only",
+    "price": 8.99,
+    "currency": "USD",
+    "frequency": "Monthly",
+    "nextDueDate": "2025-09-05"
+  },
+  {
+    "merchant": "Apple Music",
+    "logo": "applemusic.png",
+    "color": "#FA243C",
+    "plan": "Individual",
+    "price": 10.99,
+    "currency": "USD",
+    "frequency": "Monthly",
+    "nextDueDate": "2025-09-07"
+  },
+  {
+    "merchant": "HBO Max",
+    "logo": "hbomax.png",
+    "color": "#5B2D90",
+    "plan": "Standard Ad-Free",
+    "price": 16.99,
+    "currency": "USD",
+    "frequency": "Monthly",
+    "nextDueDate": "2025-09-10"
+  }
+]
