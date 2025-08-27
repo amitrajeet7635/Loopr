@@ -2,8 +2,12 @@ package com.loopr.ui.presentation.components
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -30,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,19 +41,137 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.core.graphics.ColorUtils
 import com.loopr.data.model.Subscription
 import com.loopr.ui.theme.LooprDarkCyan
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
+
+
+@Composable
+fun SwappableCardStack(subscriptions: List<Subscription>) {
+    if (subscriptions.isEmpty()) return
+
+    var progress by remember { mutableStateOf(0F) }
+    val animatedProgress by animateFloatAsState(progress, animationSpec = spring())
+    var frontCardIndex by remember { mutableStateOf(0) }
+    var focusedCardIndex by remember { mutableStateOf(0) }
+
+
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val cardWidth = screenWidth
+
+    // Track drag for each card without modifying Subscription model
+    val dragOffsets = remember(subscriptions) {
+        mutableStateListOf<Float>().apply {
+            addAll(List(subscriptions.size) { 0f })
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 20.dp), // Adjust if needed
+        contentAlignment = Alignment.TopCenter
+    ) {
+        subscriptions.forEachIndexed { index, subscription ->
+            val animatedDrag by animateFloatAsState(dragOffsets[index], spring())
+            val depth = index - focusedCardIndex
+            val animatedAlpha by animateFloatAsState(
+                targetValue = when {
+                    depth == 2 -> 0.3f
+                    depth >= 3 -> 0f
+                    else -> 1f
+                }, animationSpec = tween(500)
+            )
+
+            Box(modifier = Modifier
+                .zIndex(100f - depth)
+                .graphicsLayer {
+                    val defaultScale = 1f - (0.1f * index)
+                    val isSwapped = index < focusedCardIndex
+                    val scaleIncrement = if (isSwapped) 0.1f * index else 0.1f * animatedProgress
+                    val scale = defaultScale + scaleIncrement
+                    val scaleDownBy = 1f - scale
+
+                    scaleX = scale
+                    scaleY = scale
+
+                    val extraTranslationByScale = (180 * scaleDownBy).dp.toPx() / 2f
+                    val maxVerticalTranslation = 8.dp * index - (8.dp * animatedProgress)
+                    translationY = -(maxVerticalTranslation.toPx() + extraTranslationByScale)
+                    translationX = animatedDrag
+
+                    alpha = animatedAlpha
+                }
+                .pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragEnd = {
+                            val drag = dragOffsets[focusedCardIndex]
+                            val isPullingPrevCard = focusedCardIndex != index
+                            val threshold = if (isPullingPrevCard) 0.9f else 0.2f
+
+                            if (abs(drag) / cardWidth.toPx() > threshold) {
+                                if (drag > 0f) {
+                                    if (focusedCardIndex == 0) return@detectDragGestures
+
+                                    frontCardIndex = (focusedCardIndex - 1).coerceAtLeast(0)
+                                    dragOffsets[focusedCardIndex] =
+                                        ((screenWidth - cardWidth) / 2 + cardWidth).toPx()
+                                } else {
+                                    if (focusedCardIndex == subscriptions.lastIndex) return@detectDragGestures
+
+                                    frontCardIndex =
+                                        (focusedCardIndex + 1).coerceAtMost(subscriptions.lastIndex)
+                                    dragOffsets[focusedCardIndex] =
+                                        -((screenWidth - cardWidth) / 2 + cardWidth).toPx()
+                                }
+                                progress = frontCardIndex.toFloat()
+                                focusedCardIndex = frontCardIndex
+                            } else {
+                                dragOffsets[focusedCardIndex] = 0f
+                                progress = focusedCardIndex.toFloat()
+                            }
+                        }) { _, dragAmount ->
+                        val isPullingPrevCard = focusedCardIndex != index
+
+                        if (dragAmount.x < 0f) {
+                            if (index == subscriptions.lastIndex) return@detectDragGestures
+                            dragOffsets[index] += dragAmount.x
+                        } else {
+                            if (index == 0) return@detectDragGestures
+                            val shouldFocusToPrevCard = dragOffsets[index] >= 0f
+                            if (shouldFocusToPrevCard && index > 0) {
+                                dragOffsets[index - 1] += dragAmount.x
+                                focusedCardIndex = index - 1
+                            } else {
+                                dragOffsets[index] += dragAmount.x
+                            }
+                        }
+
+                        progress =
+                            -dragOffsets[index] / cardWidth.toPx() + if (isPullingPrevCard) index - 1 else index
+                    }
+                }) {
+                UpcomingPaymentCard(subscription = subscription)
+            }
+        }
+    }
+}
+
 
 @Composable
 fun UpcomingPaymentsSection() {
@@ -145,14 +266,7 @@ fun UpcomingPaymentsSection() {
 
             else -> {
                 // Content state
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-//                    contentPadding = PaddingValues(horizontal = 4.dp)
-                ) {
-                    items(upcomingSubscriptions) { subscription ->
-                        UpcomingPaymentCard(subscription = subscription)
-                    }
-                }
+                SwappableCardStack(subscriptions = upcomingSubscriptions)
             }
         }
 
@@ -183,7 +297,7 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
     val context = LocalContext.current
     val primaryColor = parseColor(subscription.color)
     val secondaryColor =
-        Color(ColorUtils.blendARGB(primaryColor.toArgb(), Color.Black.toArgb(), 0.3f))
+        Color(ColorUtils.blendARGB(primaryColor.toArgb(), Color.Black.toArgb(), 0.6f))
 
     val daysUntilDue = calculateDaysUntilDue(subscription.nextDueDate)
     val logoResourceId = getLogoResourceId(context, subscription.logo)
@@ -191,7 +305,7 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
 
     Card(
         modifier = Modifier
-            .width(190.dp)
+            .fillMaxWidth(0.9f)
             .height(160.dp),
         shape = RoundedCornerShape(26.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
@@ -200,10 +314,11 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.Black)
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
-                            primaryColor.copy(alpha = 0.9f), secondaryColor.copy(alpha = 0.7f)
+                            primaryColor.copy(alpha = 1f), secondaryColor.copy(alpha = 0.8f)
                         )
                     )
                 )
@@ -271,20 +386,24 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
                     }
 
                 }
-
-                // Right side - Amount and due date
-                Column {
+                Row(horizontalArrangement = Arrangement.End) {
                     Text(
                         text = "${
                             String.format(
                                 "%.2f", subscription.price
                             )
                         } ${getCurrencySymbol(subscription.currency)}",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
                         color = Color.White
                     )
+                }
 
+                // Right side - Amount and due date
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text(
                         text = when {
                             daysUntilDue == 0L -> "Due today"
@@ -296,6 +415,8 @@ private fun UpcomingPaymentCard(subscription: Subscription) {
                         color = Color.White.copy(alpha = 0.9f),
                         fontWeight = FontWeight.Normal
                     )
+
+
                 }
             }
 
@@ -361,3 +482,5 @@ private fun getCurrencySymbol(currency: String): String {
         else -> "$"
     }
 }
+
+
