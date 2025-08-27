@@ -2,6 +2,7 @@ package com.loopr.ui.presentation.components
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -55,6 +56,7 @@ import androidx.compose.ui.zIndex
 import androidx.core.graphics.ColorUtils
 import com.loopr.data.model.Subscription
 import com.loopr.ui.theme.LooprDarkCyan
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -78,6 +80,21 @@ fun SwappableCardStack(subscriptions: List<Subscription>) {
     val dragOffsets = remember(subscriptions) {
         mutableStateListOf<Float>().apply {
             addAll(List(subscriptions.size) { 0f })
+        }
+    }
+
+    val introOffset = remember { Animatable(0f) }
+    var hasAnimatedIntro by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (!hasAnimatedIntro) {
+            delay(600)
+            introOffset.snapTo(0f)
+            introOffset.animateTo(-60f, animationSpec = tween(300))
+            delay(200)
+            introOffset.animateTo(60f, animationSpec = tween(300))
+            delay(200)
+            introOffset.animateTo(0f, animationSpec = tween(300))
+            hasAnimatedIntro = true
         }
     }
 
@@ -113,7 +130,7 @@ fun SwappableCardStack(subscriptions: List<Subscription>) {
                     val extraTranslationByScale = (180 * scaleDownBy).dp.toPx() / 2f
                     val maxVerticalTranslation = 8.dp * index - (8.dp * animatedProgress)
                     translationY = -(maxVerticalTranslation.toPx() + extraTranslationByScale)
-                    translationX = animatedDrag
+                    translationX = animatedDrag + if (index == 0 && !hasAnimatedIntro) introOffset.value else 0f
 
                     alpha = animatedAlpha
                 }
