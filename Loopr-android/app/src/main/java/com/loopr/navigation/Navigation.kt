@@ -6,11 +6,11 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import android.net.Uri
-import com.loopr.ui.presentation.viewmodel.AuthViewModel
+import androidx.navigation.compose.composable
 import com.loopr.ui.presentation.viewmodel.AuthState
+import com.loopr.ui.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun LooprNavigation(
@@ -36,10 +36,15 @@ fun LooprNavigation(
             com.loopr.ui.presentation.components.LooprSplashScreen()
         }
 
-        // Auth navigation graph (Sign in, Email verification, etc.)
-        authNavigation(navController, deepLinkUri, authViewModel)
+        // Authentication navigation graph
+        authNavigation(
+            navController = navController,
+            deepLinkUri = deepLinkUri,
+            authViewModel = authViewModel
+        )
 
         // Main app navigation graph (Home, Subscriptions, Profile, etc.)
         mainNavigation(navController, authViewModel)
+
     }
 }
