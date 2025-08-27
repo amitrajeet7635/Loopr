@@ -30,7 +30,7 @@
     "nextDueDate": "2025-09-05"
   },
   {
-    "merchant": "Amazon Prime Video",
+    "merchant": "Amazon Prime",
     "logo": "prime.png",
     "color": "#00A8E1",
     "plan": "Prime Video Only",
@@ -48,15 +48,5 @@
     "currency": "USDC",
     "frequency": "Monthly",
     "nextDueDate": "2025-08-28"
-  },
-  {
-    "merchant": "Apple Music",
-    "logo": "applemusic.png",
-    "color": "#FA243C",
-    "plan": "Individual",
-    "price": 10.99,
-    "currency": "USDC",
-    "frequency": "Monthly",
-    "nextDueDate": "2025-09-10"
   }
 ]

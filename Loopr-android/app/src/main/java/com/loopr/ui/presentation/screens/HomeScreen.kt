@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -53,7 +52,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -279,7 +277,7 @@ private fun HomeContent(authViewModel: AuthViewModel) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        item{
+        item {
             LooprTopAppBar(authViewModel = authViewModel)
         }
 
@@ -421,79 +419,114 @@ private fun LooprTopAppBar(
     // Collect user profile data from AuthViewModel
     val userProfile by authViewModel.userProfile.collectAsState()
 
-
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Loopr Logo/Brand
         Row(
-            modifier = Modifier.statusBarsPadding()
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Loopr Logo/Brand
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            // Logo placeholder - will be replaced with actual logo later
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(LooprCyan, LooprCyanVariant)
+                        )
+                    ), contentAlignment = Alignment.Center
             ) {
-                // Logo placeholder - will be replaced with actual logo later
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(LooprCyan, LooprCyanVariant)
-                            )
-                        ), contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "L",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
                 Text(
-                    text = "Loopr",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    text = "L", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White
                 )
             }
 
-            // Account Avatar with Dropdown
-            Box {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    LooprCyan.copy(alpha = 0.2f), LooprCyan.copy(alpha = 0.1f)
+            Row(
+                modifier = Modifier.statusBarsPadding()
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Loopr Logo/Brand
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Logo placeholder - will be replaced with actual logo later
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(LooprCyan, LooprCyanVariant)
+                                )
+                            ), contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "L",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Text(
+                        text = "Loopr",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
+                // Account Avatar with Dropdown
+                Box {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(
+                                brush = Brush.radialGradient(
+                                    colors = listOf(
+                                        LooprCyan.copy(alpha = 0.2f), LooprCyan.copy(alpha = 0.1f)
+                                    )
                                 )
                             )
-                        )
-                        .clickable { showDropdown = !showDropdown },
-                    contentAlignment = Alignment.Center
-                ) {
-                    // AsyncImage to load and display the actual profile image from datastore
-                    if (userProfile.profileImageUrl.isNotEmpty()) {
-                        var isLoading by remember { mutableStateOf(true) }
-                        var hasError by remember { mutableStateOf(false) }
+                            .clickable { showDropdown = !showDropdown },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // AsyncImage to load and display the actual profile image from datastore
+                        if (userProfile.profileImageUrl.isNotEmpty()) {
+                            var isLoading by remember { mutableStateOf(true) }
+                            var hasError by remember { mutableStateOf(false) }
 
-                        AsyncImage(
-                            model = userProfile.profileImageUrl,
-                            contentDescription = "Account",
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop,
-                            onLoading = { isLoading = true; hasError = false },
-                            onSuccess = { isLoading = false; hasError = false },
-                            onError = { isLoading = false; hasError = true })
+                            AsyncImage(
+                                model = userProfile.profileImageUrl,
+                                contentDescription = "Account",
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop,
+                                onLoading = { isLoading = true; hasError = false },
+                                onSuccess = { isLoading = false; hasError = false },
+                                onError = { isLoading = false; hasError = true })
 
-                        if (isLoading || hasError) {
+                            if (isLoading || hasError) {
+                                Icon(
+                                    imageVector = Icons.Filled.Person,
+                                    contentDescription = "Account",
+                                    tint = LooprCyan,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        } else {
+                            // Show default icon when no profile image URL is available
                             Icon(
                                 imageVector = Icons.Filled.Person,
                                 contentDescription = "Account",
@@ -501,87 +534,79 @@ private fun LooprTopAppBar(
                                 modifier = Modifier.size(24.dp)
                             )
                         }
-                    } else {
-                        // Show default icon when no profile image URL is available
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = "Account",
-                            tint = LooprCyan,
-                            modifier = Modifier.size(24.dp)
-                        )
                     }
-                }
 
-                // Dropdown Menu with real user data
-                DropdownMenu(
-                    expanded = showDropdown,
-                    onDismissRequest = { showDropdown = false },
-                    modifier = Modifier.width(200.dp),
-                    properties = PopupProperties(
-                        dismissOnBackPress = true, dismissOnClickOutside = true
-                    )
-                ) {
-                    // Account Name - Now using real data from DataStore
-                    DropdownMenuItem(text = {
-                        Column {
-                            Text(
-                                text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.onSurface
+                    // Dropdown Menu with real user data
+                    DropdownMenu(
+                        expanded = showDropdown,
+                        onDismissRequest = { showDropdown = false },
+                        modifier = Modifier.width(200.dp),
+                        properties = PopupProperties(
+                            dismissOnBackPress = true, dismissOnClickOutside = true
+                        )
+                    ) {
+                        // Account Name - Now using real data from DataStore
+                        DropdownMenuItem(text = {
+                            Column {
+                                Text(
+                                    text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }, onClick = { }, leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.AccountCircle,
+                                contentDescription = null,
+                                tint = LooprCyan
                             )
+                        })
+
+                        HorizontalDivider()
+
+                        DropdownMenuItem(text = {
                             Text(
-                                text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                text = "Profile", style = MaterialTheme.typography.bodyLarge
                             )
-                        }
-                    }, onClick = { }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.AccountCircle,
-                            contentDescription = null,
-                            tint = LooprCyan
-                        )
-                    })
+                        }, onClick = {
+                            showDropdown = false
+                            // TODO: Navigate to profile
+                        }, leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Person,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        })
 
-                    HorizontalDivider()
-
-                    DropdownMenuItem(text = {
-                        Text(
-                            text = "Profile", style = MaterialTheme.typography.bodyLarge
-                        )
-                    }, onClick = {
-                        showDropdown = false
-                        // TODO: Navigate to profile
-                    }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Person,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    })
-
-                    // Logout Option
-                    DropdownMenuItem(text = {
-                        Text(
-                            text = "Logout",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }, onClick = {
-                        showDropdown = false
-                        // TODO: Handle logout functionality
-                    }, leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.ExitToApp,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.error
-                        )
-                    })
+                        // Logout Option
+                        DropdownMenuItem(text = {
+                            Text(
+                                text = "Logout",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }, onClick = {
+                            showDropdown = false
+                            // TODO: Handle logout functionality
+                        }, leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.ExitToApp,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        })
+                    }
                 }
             }
         }
-
+    }
 }
 
 @Composable
@@ -590,7 +615,7 @@ private fun OverviewCard() {
     val totalSpent = 3200f
     val monthlyBudget = 4000f
     val isOverBudget = totalSpent > monthlyBudget
-    (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
+    val budgetProgress = (totalSpent / monthlyBudget).coerceAtMost(1.2f) // Cap at 120% for visual purposes
     val overAmount = if (isOverBudget) totalSpent - monthlyBudget else monthlyBudget - totalSpent
     ((overAmount / monthlyBudget) * 100).toInt()
 
