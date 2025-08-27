@@ -11,5 +11,7 @@ data class Subscription(
     val price: Double,
     val currency: String,
     val frequency: String,
-    val nextDueDate: String
+    val nextDueDate: String,
+    val selected: Boolean = false,
+    val collapsed: Boolean = false
 )
