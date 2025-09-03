@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PayWithLoopr } from 'loopr-sdk';
+import looprLogo from '../assets/loopr-logo-icon.png';
 
 // Mock plans data (same as in Home.tsx)
 const plans = [
@@ -120,10 +121,12 @@ export const Checkout: React.FC = () => {
             <span>Back to Plans</span>
           </button>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-blue-400 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">L</span>
-            </div>
-            <span className="text-white text-xl font-bold">Loopr</span>
+            <img 
+              src={looprLogo} 
+              alt="Loopr Logo" 
+              className="w-8 h-8 rounded-lg"
+            />
+            <span className="text-white text-xl font-bold">Loopr Services</span>
           </div>
         </div>
       </nav>
@@ -134,7 +137,7 @@ export const Checkout: React.FC = () => {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-white mb-4">Complete Your Purchase</h1>
             <p className="text-xl text-gray-300">
-              Secure payment powered by Solana blockchain
+              Secure payment powered by blockchain technology
             </p>
           </div>
 
@@ -189,7 +192,7 @@ export const Checkout: React.FC = () => {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">Solana Pay</h3>
+                    <h3 className="text-lg font-semibold text-white">Loopr Pay</h3>
                     <p className="text-sm text-gray-400">Fast, secure, and decentralized</p>
                   </div>
                 </div>
@@ -202,7 +205,7 @@ export const Checkout: React.FC = () => {
                     <div>
                       <p className="text-sm text-blue-300 font-medium">Secure Payment</p>
                       <p className="text-xs text-blue-200 mt-1">
-                        Your payment is processed on the Solana blockchain. No credit card information is stored.
+                        Your payment is processed on the blockchain. No credit card information is stored.
                       </p>
                     </div>
                   </div>
