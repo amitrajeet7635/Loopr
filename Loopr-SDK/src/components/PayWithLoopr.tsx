@@ -98,7 +98,7 @@ export const PayWithLoopr: React.FC<PayWithLooprProps> = ({
 
   if (paymentState.isWaitingForPayment && paymentState.qrCode) {
     return (
-      <div className="w-full max-w-lg mx-auto">
+      <div className="w-full max-w-2xl mx-auto">
         {/* Animated container with glow effect */}
         <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-purple-500/20 shadow-2xl shadow-purple-500/10 transform transition-all duration-500 hover:scale-105">
           {/* Animated border glow */}
@@ -131,10 +131,10 @@ export const PayWithLoopr: React.FC<PayWithLooprProps> = ({
                 <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-3 border-l-3 border-purple-400 rounded-bl-lg animate-pulse"></div>
                 <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-3 border-r-3 border-purple-400 rounded-br-lg animate-pulse"></div>
                 
-                {/* QR Code display */}
-                <div className="bg-white p-6 rounded-xl shadow-2xl">
+                {/* QR Code display - larger size */}
+                <div className="bg-white p-4 rounded-xl shadow-2xl">
                   {paymentState.qrCode ? (
-                    <div className="w-64 h-64 mx-auto flex items-center justify-center">
+                    <div className="w-80 h-80 mx-auto flex items-center justify-center">
                       {typeof paymentState.qrCode === 'string' ? (
                         paymentState.qrCode.startsWith('data:') ? (
                           <img 
@@ -179,7 +179,7 @@ export const PayWithLoopr: React.FC<PayWithLooprProps> = ({
                       )}
                     </div>
                   ) : (
-                    <div className="w-64 h-64 rounded-lg flex items-center justify-center bg-gray-100">
+                    <div className="w-80 h-80 rounded-lg flex items-center justify-center bg-gray-100">
                       <span className="text-gray-500">QR Code not available</span>
                     </div>
                   )}

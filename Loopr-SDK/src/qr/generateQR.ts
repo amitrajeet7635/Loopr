@@ -4,14 +4,14 @@ import * as QRCode from 'qrcode';
 
 // Loopr brand colors - purple/blue gradient theme inspired by the logo
 const BRAND_COLORS = {
-  primary: '#516BFE', // Blue from logo
-  secondary: '#7C44FE', // Purple from logo 
+  primary: '#7C44FE', // Purple from logo - main QR color to match app theme
+  secondary: '#516BFE', // Blue from logo 
   accent: '#8b5cf6', // Violet-500
   accent2: '#7F48F4', // Purple shade from logo
   accent3: '#329CFA', // Light blue from logo
-  dark: '#1e1b4b', // Indigo-900
-  light: '#f8fafc', // Slate-50
-  finder: '#4c1d95' // Deep purple for finder patterns
+  dark: '#4c1d95', // Deep purple for finder patterns - matches app theme
+  light: '#ffffff', // Pure white background
+  finder: '#7C44FE' // Purple for better theme consistency
 };
 
 // Utility function to validate hex colors and convert RGBA to hex if needed
@@ -70,34 +70,34 @@ function createSimplifiedLogo(): string {
 </svg>`;
 }
 
-// Function to get the actual Loopr infinity logo SVG content
+// Function to get the actual Loopr infinity logo SVG content with clear background
 function getLooprLogoSVG(): string {
-  // Return an infinity-style logo SVG content that matches the loopr-logo-icon.png
+  // Return an infinity-style logo SVG content that matches the loopr-logo-icon.png with transparent background
   return `
 <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="infinityGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#516BFE;stop-opacity:1" />
-      <stop offset="25%" style="stop-color:#7C44FE;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#7C44FE;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#516BFE;stop-opacity:1" />
       <stop offset="50%" style="stop-color:#7F48F4;stop-opacity:1" />
       <stop offset="75%" style="stop-color:#329CFA;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#516BFE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C44FE;stop-opacity:1" />
     </linearGradient>
     <filter id="infinityShadow">
-      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#1e1b4b" flood-opacity="0.3"/>
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#1e1b4b" flood-opacity="0.3"/>
     </filter>
   </defs>
   
-  <!-- White background circle -->
-  <circle cx="60" cy="60" r="55" fill="white" stroke="url(#infinityGrad)" stroke-width="3" filter="url(#infinityShadow)"/>
+  <!-- White circular background with clear cutout for better QR integration -->
+  <circle cx="60" cy="60" r="58" fill="white" opacity="0.95"/>
   
   <!-- Infinity symbol - two connected loops -->
   <path d="M30 60 C30 45, 40 35, 50 35 C60 35, 70 45, 70 60 C70 75, 80 85, 90 85 C100 85, 110 75, 110 60 C110 45, 100 35, 90 35 C80 35, 70 45, 70 60 C70 75, 60 85, 50 85 C40 85, 30 75, 30 60 Z" 
         fill="url(#infinityGrad)" filter="url(#infinityShadow)"/>
   
   <!-- Inner decorative elements -->
-  <circle cx="45" cy="60" r="8" fill="white" filter="url(#infinityShadow)"/>
-  <circle cx="75" cy="60" r="8" fill="white" filter="url(#infinityShadow)"/>
+  <circle cx="45" cy="60" r="6" fill="white" opacity="0.9"/>
+  <circle cx="75" cy="60" r="6" fill="white" opacity="0.9"/>
   
   <!-- Center connection point -->
   <circle cx="60" cy="60" r="4" fill="url(#infinityGrad)" filter="url(#infinityShadow)"/>
@@ -166,13 +166,28 @@ async function createCustomizedQRCanvas(qrCanvas: HTMLCanvasElement, logoSvg: st
 
 function addLogoToCenter(ctx: CanvasRenderingContext2D, qrX: number, qrY: number, qrSize: number, logoSvg: string): Promise<void> {
   return new Promise((resolve) => {
-    const logoSize = 60; // Standard size for QR code logo
+    const logoSize = 80; // Increased logo size for better visibility
     const logoX = qrX + (qrSize - logoSize) / 2;
     const logoY = qrY + (qrSize - logoSize) / 2;
     
-    // Create a simple white rectangular background for the logo
+    // Create a perfectly circular white background for the logo with smooth edges
+    const centerX = logoX + logoSize / 2;
+    const centerY = logoY + logoSize / 2;
+    const radius = logoSize / 2 + 6;
+    
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'white';
-    ctx.fillRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
+    ctx.fill();
+    
+    // Add a subtle shadow for depth
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.fill();
+    ctx.restore();
     
     // Load and draw the actual logo image
     const img = new Image();
@@ -220,15 +235,27 @@ function addLogoToCenter(ctx: CanvasRenderingContext2D, qrX: number, qrY: number
 async function addSimpleLogo(canvas: HTMLCanvasElement): Promise<void> {
   return new Promise((resolve) => {
     const ctx = canvas.getContext('2d')!;
-    const logoSize = 60; // Standard logo size
+    const logoSize = 80; // Increased logo size
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     const logoX = centerX - logoSize / 2;
     const logoY = centerY - logoSize / 2;
 
-    // Create simple white background for logo
+    // Create circular white background for logo with smooth edges
+    const radius = logoSize / 2 + 6;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'white';
-    ctx.fillRect(logoX - 4, logoY - 4, logoSize + 8, logoSize + 8);
+    ctx.fill();
+    
+    // Add subtle shadow
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.fill();
+    ctx.restore();
 
     // Try to load the actual logo from assets
     const img = new Image();
@@ -276,16 +303,30 @@ async function addSimpleLogo(canvas: HTMLCanvasElement): Promise<void> {
 }
 
 function drawFallbackLogo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
-  // Simple branded background
-  ctx.fillStyle = BRAND_COLORS.primary;
-  ctx.fillRect(x, y, size, size);
+  // Create gradient background matching app theme
+  const gradient = ctx.createLinearGradient(x, y, x + size, y + size);
+  gradient.addColorStop(0, BRAND_COLORS.primary);
+  gradient.addColorStop(0.5, BRAND_COLORS.secondary);
+  gradient.addColorStop(1, BRAND_COLORS.accent2);
+  
+  // Draw circular logo background
+  const centerX = x + size / 2;
+  const centerY = y + size / 2;
+  const radius = size / 2;
+  
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+  ctx.restore();
   
   // Draw "L" for Loopr
   ctx.fillStyle = 'white';
-  ctx.font = `bold ${size * 0.5}px Arial`;
+  ctx.font = `bold ${size * 0.45}px Arial`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('L', x + size / 2, y + size / 2);
+  ctx.fillText('L', centerX, centerY);
 }
 
 export async function generateQRCode(uri: string): Promise<HTMLCanvasElement | string> {
@@ -295,9 +336,9 @@ export async function generateQRCode(uri: string): Promise<HTMLCanvasElement | s
   if (typeof document !== 'undefined') {
     console.log('Browser environment detected, generating canvas QR code');
     
-    // Browser environment - return canvas element
+    // Browser environment - return canvas element with larger size
     const canvas = document.createElement('canvas');
-    const size = 400;
+    const size = 500; // Increased size for better visibility
     canvas.width = size;
     canvas.height = size;
     
@@ -305,10 +346,10 @@ export async function generateQRCode(uri: string): Promise<HTMLCanvasElement | s
       // Generate base QR code with application theme colors
       await QRCode.toCanvas(canvas, uri, {
         width: size,
-        margin: 4,
+        margin: 3, // Reduced margin for larger QR code
         color: {
-          dark: BRAND_COLORS.primary, // Theme blue color
-          light: '#ffffff' // White background
+          dark: BRAND_COLORS.primary, // Purple theme color to match app
+          light: BRAND_COLORS.light // Pure white background
         },
         errorCorrectionLevel: 'H' // High error correction for logo integration
       });
@@ -343,13 +384,13 @@ export async function generateQRCode(uri: string): Promise<HTMLCanvasElement | s
         return canvas;
       } catch (fallbackError) {
         console.error('Fallback canvas generation also failed:', fallbackError);
-        // Return data URL as final fallback
+        // Return data URL as final fallback with app theme colors
         return await QRCode.toDataURL(uri, {
           width: size,
-          margin: 4,
+          margin: 3,
           color: {
             dark: BRAND_COLORS.primary,
-            light: '#ffffff'
+            light: BRAND_COLORS.light
           },
           errorCorrectionLevel: 'M'
         });
@@ -361,11 +402,11 @@ export async function generateQRCode(uri: string): Promise<HTMLCanvasElement | s
     // Node.js environment - return data URL string with branded styling
     try {
       const dataUrl = await QRCode.toDataURL(uri, {
-        width: 400,
-        margin: 4,
+        width: 500, // Increased size
+        margin: 3, // Reduced margin
         color: {
-          dark: '#000000', // Classic black
-          light: '#ffffff'
+          dark: BRAND_COLORS.primary, // App theme purple color
+          light: BRAND_COLORS.light // Pure white
         },
         errorCorrectionLevel: 'H'
       });
