@@ -24,5 +24,7 @@ export function createPaymentIntent(config: PaymentIntentConfig): string {
     memo
   });
 
-  return url.toString(); // Returns: solana:<address>?amount=...&memo=...
+  // Replace 'solana:' prefix with 'loopr:' for Loopr mobile app compatibility
+  const urlString = url.toString();
+  return urlString.replace(/^solana:/, 'loopr:'); // Returns: loopr:<address>?amount=...&memo=...
 }
