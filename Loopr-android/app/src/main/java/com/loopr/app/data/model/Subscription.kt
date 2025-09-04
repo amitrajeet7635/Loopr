@@ -1,4 +1,4 @@
-package com.loopr.data.model
+package com.loopr.app.data.model
 
 import kotlinx.serialization.Serializable
 

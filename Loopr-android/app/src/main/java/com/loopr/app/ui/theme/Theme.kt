@@ -1,4 +1,4 @@
-package com.loopr.ui.theme
+package com.loopr.app.ui.theme
 
 import android.app.Activity
 import android.os.Build

@@ -1,4 +1,4 @@
-package com.loopr.ui.presentation.screens
+package com.loopr.app.ui.presentation.screens
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -76,14 +76,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import coil3.compose.AsyncImage
-import com.loopr.ui.presentation.components.UpcomingPaymentsSection
-import com.loopr.ui.presentation.viewmodel.AuthViewModel
-import com.loopr.ui.theme.LooprCyan
-import com.loopr.ui.theme.LooprCyanVariant
+import com.loopr.app.ui.presentation.components.UpcomingPaymentsSection
+import com.loopr.app.ui.theme.LooprCyan
+import com.loopr.app.ui.theme.LooprCyanVariant
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier, authViewModel: AuthViewModel
+    modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -111,7 +110,7 @@ fun HomeScreen(
                 )
         ) {
             when (selectedTab) {
-                0 -> HomeContent(authViewModel)
+                0 -> HomeContent()
                 1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
@@ -270,15 +269,15 @@ private fun LooprBottomNavigationBar(
 }
 
 @Composable
-private fun HomeContent(authViewModel: AuthViewModel) {
+private fun HomeContent() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(16.dp))
+    {
         item {
-            LooprTopAppBar(authViewModel = authViewModel)
+            LooprTopAppBar()
         }
 
         item {
@@ -412,14 +411,12 @@ private data class BottomNavItem(
 
 @Composable
 private fun LooprTopAppBar(
-    authViewModel: AuthViewModel
+
 ) {
     var showDropdown by remember { mutableStateOf(false) }
 
-    // Collect user profile data from AuthViewModel
-    val userProfile by authViewModel.userProfile.collectAsState()
 
-
+    val userInfo = null
 
     Row(
         modifier = Modifier
@@ -474,31 +471,31 @@ private fun LooprTopAppBar(
                     .clickable { showDropdown = !showDropdown },
                 contentAlignment = Alignment.Center
             ) {
-                // AsyncImage to load and display the actual profile image from datastore
-                if (userProfile.profileImageUrl.isNotEmpty()) {
-                    var isLoading by remember { mutableStateOf(true) }
-                    var hasError by remember { mutableStateOf(false) }
-
-                    AsyncImage(
-                        model = userProfile.profileImageUrl,
-                        contentDescription = "Account",
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clip(CircleShape),
-                        contentScale = ContentScale.Crop,
-                        onLoading = { isLoading = true; hasError = false },
-                        onSuccess = { isLoading = false; hasError = false },
-                        onError = { isLoading = false; hasError = true })
-
-                    if (isLoading || hasError) {
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = "Account",
-                            tint = LooprCyan,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                } else {
+                // AsyncImage to load and display the actual profile image
+//                if (!userInfo?.profileImage.isNullOrEmpty()) {
+//                    var isLoading by remember { mutableStateOf(true) }
+//                    var hasError by remember { mutableStateOf(false) }
+//
+//                    AsyncImage(
+//                        model = userInfo?.profileImage,
+//                        contentDescription = "Account",
+//                        modifier = Modifier
+//                            .size(32.dp)
+//                            .clip(CircleShape),
+//                        contentScale = ContentScale.Crop,
+//                        onLoading = { isLoading = true; hasError = false },
+//                        onSuccess = { isLoading = false; hasError = false },
+//                        onError = { isLoading = false; hasError = true })
+//
+//                    if (isLoading || hasError) {
+//                        Icon(
+//                            imageVector = Icons.Filled.Person,
+//                            contentDescription = "Account",
+//                            tint = LooprCyan,
+//                            modifier = Modifier.size(24.dp)
+//                        )
+//                    }
+//                } else {
                     // Show default icon when no profile image URL is available
                     Icon(
                         imageVector = Icons.Filled.Person,
@@ -507,7 +504,7 @@ private fun LooprTopAppBar(
                         modifier = Modifier.size(24.dp)
                     )
                 }
-            }
+//            }
 
             // Dropdown Menu with real user data
             DropdownMenu(
@@ -518,17 +515,17 @@ private fun LooprTopAppBar(
                     dismissOnBackPress = true, dismissOnClickOutside = true
                 )
             ) {
-                // Account Name - Now using real data from DataStore
+                // Account Name - Now using real data directly from Web3Auth state
                 DropdownMenuItem(text = {
                     Column {
                         Text(
-                            text = userProfile.name.ifEmpty { "User" }, // Use real name from DataStore
+                            text = "User",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = userProfile.emailId.ifEmpty { "No email" }, // Use real email from DataStore
+                            text = "No email",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -567,7 +564,7 @@ private fun LooprTopAppBar(
                     )
                 }, onClick = {
                     showDropdown = false
-                    // TODO: Handle logout functionality
+//                    authViewModel.logout()
                 }, leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.ExitToApp,
