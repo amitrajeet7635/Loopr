@@ -1,4 +1,4 @@
-package com.loopr.ui.presentation.components
+package com.loopr.app.ui.presentation.components
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -49,13 +49,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.core.graphics.ColorUtils
-import com.loopr.data.model.Subscription
-import com.loopr.ui.theme.LooprDarkCyan
+import com.loopr.app.data.model.Subscription
+import com.loopr.app.ui.theme.LooprDarkCyan
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
@@ -276,7 +277,7 @@ fun UpcomingPaymentsSection() {
                         text = "No upcoming payments in the next 15 days",
                         modifier = Modifier.padding(24.dp),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = TextAlign.Center
                     )
                 }
             }

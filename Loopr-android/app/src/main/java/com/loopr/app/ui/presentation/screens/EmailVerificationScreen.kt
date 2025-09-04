@@ -1,5 +1,6 @@
-package com.loopr.ui.presentation.screens
+package com.loopr.app.ui.presentation.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,12 +26,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.loopr.ui.theme.LooprTheme
-import com.loopr.ui.theme.LooprCyan
-import com.loopr.ui.theme.LooprCyanVariant
+import com.loopr.app.ui.theme.LooprCyan
+import com.loopr.app.ui.theme.LooprCyanVariant
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -186,7 +185,7 @@ fun EmailVerificationScreen(
                 pressedElevation = if (isValidCode) 12.dp else 0.dp,
                 disabledElevation = 0.dp
             ),
-            border = if (!isValidCode) androidx.compose.foundation.BorderStroke(
+            border = if (!isValidCode) BorderStroke(
                 1.dp,
                 MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
             ) else null
@@ -366,26 +365,6 @@ private fun CodeDigitBox(
             fontWeight = FontWeight.Bold,
             color = if (digit.isNotEmpty()) LooprCyan else MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EmailVerificationScreenPreview() {
-    LooprTheme {
-        EmailVerificationScreen(
-            email = "user@example.com"
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun EmailVerificationScreenDarkPreview() {
-    LooprTheme {
-        EmailVerificationScreen(
-            email = "user@example.com"
         )
     }
 }

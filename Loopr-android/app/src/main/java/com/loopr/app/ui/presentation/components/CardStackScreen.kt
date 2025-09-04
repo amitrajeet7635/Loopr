@@ -1,4 +1,4 @@
-package com.loopr.ui.presentation.components
+package com.loopr.app.ui.presentation.components
 
 import android.graphics.Color.parseColor
 import androidx.compose.animation.core.Spring
@@ -54,8 +54,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.core.graphics.ColorUtils
-import com.loopr.data.model.Subscription
-import com.loopr.ui.theme.ErrorColor
+import com.loopr.app.data.model.Subscription
+import com.loopr.app.ui.theme.ErrorColor
 import kotlinx.coroutines.launch
 
 @Composable

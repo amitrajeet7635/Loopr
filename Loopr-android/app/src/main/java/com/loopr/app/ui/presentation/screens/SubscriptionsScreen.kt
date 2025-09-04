@@ -1,4 +1,4 @@
-package com.loopr.ui.presentation.screens
+package com.loopr.app.ui.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,8 +33,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.loopr.data.model.Subscription
-import com.loopr.ui.presentation.components.CardStackScreen
+import com.loopr.app.data.model.Subscription
+import com.loopr.app.ui.presentation.components.CardStackScreen
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
