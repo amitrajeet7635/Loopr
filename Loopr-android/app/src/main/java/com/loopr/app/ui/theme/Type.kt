@@ -1,4 +1,4 @@
-package com.loopr.ui.theme
+package com.loopr.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

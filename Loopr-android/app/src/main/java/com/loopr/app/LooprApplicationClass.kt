@@ -1,4 +1,4 @@
-package com.loopr
+package com.loopr.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,4 +1,4 @@
-package com.loopr.navigation
+package com.loopr.app.navigation
 
 // Navigation routes
 object LooprDestinations {

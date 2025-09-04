@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.loopr"
+    namespace = "com.loopr.app"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.loopr"
+        applicationId = "com.loopr.app"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -66,7 +66,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     //Web3 Auth SDK
-    implementation("com.github.web3auth:web3auth-android-sdk:9.0.0")
+    implementation("com.github.web3auth:web3auth-android-sdk:9.1.2")
     //Kotlin client for solana
     implementation("org.sol4k:sol4k:0.5.17")
 
@@ -75,13 +75,6 @@ dependencies {
 
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
-
-    // DataStore for user profile management
-    implementation("androidx.datastore:datastore-preferences:1.1.7")
-    implementation("androidx.datastore:datastore-core:1.1.7")
-
-    // Encrypted SharedPreferences for secure Web3Auth session storage
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
