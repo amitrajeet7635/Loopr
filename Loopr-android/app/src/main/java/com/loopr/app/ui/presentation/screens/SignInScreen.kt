@@ -45,12 +45,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -60,12 +58,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.loopr.app.R
 import com.loopr.app.ui.presentation.components.LooprLoadingUI
-import com.loopr.app.ui.theme.LooprCyan
-import com.loopr.app.ui.theme.LooprCyanVariant
 import com.loopr.app.ui.presentation.viewmodel.AuthViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.loopr.app.ui.theme.LooprCyan
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.BuildEnv
 import com.web3auth.core.types.ExtraLoginOptions
@@ -136,7 +133,7 @@ fun SignInScreen(
 
     when {
         !isInitialized -> {
-            LooprLoadingUI(subtitle = "Checking session...")
+            LooprLoadingUI(subtitle = "Setting things up for you...")
         }
 
         isAuthenticated -> {
@@ -196,7 +193,11 @@ fun SignInContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(bottom = 48.dp)
             ) {
-                Image(painterResource(id = R.drawable.loopr_logo), contentDescription = "Loopr Logo", modifier = Modifier.scale(0.8f))
+                Image(
+                    painterResource(id = R.drawable.loopr_logo),
+                    contentDescription = "Loopr Logo",
+                    modifier = Modifier.scale(0.8f)
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -222,7 +223,7 @@ fun SignInContent(
             OutlinedTextField(
                 value = email,
                 onValueChange = { onEmailChange(it) },
-                placeholder = { Text("Continue with email...") },
+                placeholder = { Text("Continue with email") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Email,
@@ -353,7 +354,7 @@ fun SignInContent(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Loading...",
+                            text = "Authenticating",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -379,7 +380,8 @@ private fun SignInButton(
     isLoading: Boolean = false
 ) {
     Card(
-        modifier = modifier.padding(vertical = 6.dp)
+        modifier = modifier
+            .padding(vertical = 6.dp)
             .fillMaxWidth()
             .height(56.dp)
             .clickable(enabled = enabled && !isLoading) { if (enabled && !isLoading) onClick() },
