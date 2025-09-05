@@ -60,3 +60,4 @@ build/
 
 # Test output
 test-results/
+.npmrc
