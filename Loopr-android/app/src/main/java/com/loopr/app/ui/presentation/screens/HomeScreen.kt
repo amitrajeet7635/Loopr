@@ -79,10 +79,13 @@ import coil3.compose.AsyncImage
 import com.loopr.app.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.app.ui.theme.LooprCyan
 import com.loopr.app.ui.theme.LooprCyanVariant
+import com.web3auth.core.types.UserInfo
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    userInfo: UserInfo?,
+    onLogout: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -110,7 +113,7 @@ fun HomeScreen(
                 )
         ) {
             when (selectedTab) {
-                0 -> HomeContent()
+                0 -> HomeContent(userInfo = userInfo, onLogout = onLogout)
                 1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
@@ -269,7 +272,7 @@ private fun LooprBottomNavigationBar(
 }
 
 @Composable
-private fun HomeContent() {
+private fun HomeContent(userInfo: UserInfo?, onLogout: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -277,7 +280,7 @@ private fun HomeContent() {
         verticalArrangement = Arrangement.spacedBy(16.dp))
     {
         item {
-            LooprTopAppBar()
+            LooprTopAppBar(userInfo = userInfo, onLogout = onLogout)
         }
 
         item {
@@ -411,12 +414,10 @@ private data class BottomNavItem(
 
 @Composable
 private fun LooprTopAppBar(
-
+    userInfo: UserInfo?,
+    onLogout: () -> Unit
 ) {
     var showDropdown by remember { mutableStateOf(false) }
-
-
-    val userInfo = null
 
     Row(
         modifier = Modifier
@@ -471,31 +472,30 @@ private fun LooprTopAppBar(
                     .clickable { showDropdown = !showDropdown },
                 contentAlignment = Alignment.Center
             ) {
-                // AsyncImage to load and display the actual profile image
-//                if (!userInfo?.profileImage.isNullOrEmpty()) {
-//                    var isLoading by remember { mutableStateOf(true) }
-//                    var hasError by remember { mutableStateOf(false) }
-//
-//                    AsyncImage(
-//                        model = userInfo?.profileImage,
-//                        contentDescription = "Account",
-//                        modifier = Modifier
-//                            .size(32.dp)
-//                            .clip(CircleShape),
-//                        contentScale = ContentScale.Crop,
-//                        onLoading = { isLoading = true; hasError = false },
-//                        onSuccess = { isLoading = false; hasError = false },
-//                        onError = { isLoading = false; hasError = true })
-//
-//                    if (isLoading || hasError) {
-//                        Icon(
-//                            imageVector = Icons.Filled.Person,
-//                            contentDescription = "Account",
-//                            tint = LooprCyan,
-//                            modifier = Modifier.size(24.dp)
-//                        )
-//                    }
-//                } else {
+                if (!userInfo?.profileImage.isNullOrEmpty()) {
+                    var isLoading by remember { mutableStateOf(true) }
+                    var hasError by remember { mutableStateOf(false) }
+
+                    AsyncImage(
+                        model = userInfo?.profileImage,
+                        contentDescription = "Account",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        onLoading = { isLoading = true; hasError = false },
+                        onSuccess = { isLoading = false; hasError = false },
+                        onError = { isLoading = false; hasError = true })
+
+                    if (isLoading || hasError) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Account",
+                            tint = LooprCyan,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                } else {
                     // Show default icon when no profile image URL is available
                     Icon(
                         imageVector = Icons.Filled.Person,
@@ -504,7 +504,7 @@ private fun LooprTopAppBar(
                         modifier = Modifier.size(24.dp)
                     )
                 }
-//            }
+            }
 
             // Dropdown Menu with real user data
             DropdownMenu(
@@ -519,13 +519,13 @@ private fun LooprTopAppBar(
                 DropdownMenuItem(text = {
                     Column {
                         Text(
-                            text = "User",
+                            text = userInfo?.name ?: "User",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "No email",
+                            text = userInfo?.email ?: "No email",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -564,7 +564,7 @@ private fun LooprTopAppBar(
                     )
                 }, onClick = {
                     showDropdown = false
-//                    authViewModel.logout()
+                    onLogout()
                 }, leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.ExitToApp,

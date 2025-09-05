@@ -62,6 +62,8 @@ import com.loopr.app.R
 import com.loopr.app.ui.presentation.components.LooprLoadingUI
 import com.loopr.app.ui.theme.LooprCyan
 import com.loopr.app.ui.theme.LooprCyanVariant
+import com.loopr.app.ui.presentation.viewmodel.AuthViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.BuildEnv
 import com.web3auth.core.types.ExtraLoginOptions
@@ -88,6 +90,8 @@ fun getActivity(): Activity {
 fun SignInScreen(
     deepLinkUri: Uri? = null,
     onAuthenticationSuccess: () -> Unit = {},
+    authViewModel: AuthViewModel = viewModel(),
+    shouldLogout: Boolean = false
 ) {
     var email by remember { mutableStateOf("") }
     var isAuthenticated by remember { mutableStateOf(false) }
@@ -109,6 +113,14 @@ fun SignInScreen(
         )
     }
 
+    // Handle logout if requested
+    LaunchedEffect(shouldLogout) {
+        if (shouldLogout) {
+            web3Auth.logout()
+            authViewModel.setUserInfo(null)
+        }
+    }
+
     // Handle deep link and check session
     LaunchedEffect(deepLinkUri) {
         isInitialized = false
@@ -126,6 +138,8 @@ fun SignInScreen(
         }
 
         isAuthenticated -> {
+            // Set userInfo in AuthViewModel
+            authViewModel.setUserInfo(web3Auth.getUserInfo())
             onAuthenticationSuccess()
         }
 
@@ -139,6 +153,7 @@ fun SignInScreen(
                     web3Auth.login(loginParams).whenComplete { result, error ->
                         isLoading = false
                         if (error == null && result.userInfo != null) {
+                            authViewModel.setUserInfo(result.userInfo)
                             onAuthenticationSuccess()
                         } else {
                             Toast.makeText(activity, error?.message, Toast.LENGTH_LONG).show()
