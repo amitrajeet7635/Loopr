@@ -244,77 +244,147 @@ export const PayWithLoopr: React.FC<PayWithLooprProps> = ({
         </div>
       )}
       
-      {/* Enhanced Pay with Loopr Button */}
+      {/* Premium Glass Morphism Pay with Loopr Button */}
       <div className="relative mb-4">
-        {/* Multiple glowing background effects for enhanced visibility */}
-        <div className="absolute -inset-2 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 rounded-xl blur-lg opacity-90 animate-pulse"></div>
-        <div className="absolute -inset-1 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 rounded-xl blur-md opacity-75"></div>
+        {/* Outer glow effects */}
+        <div className="absolute -inset-6 bg-gradient-to-r from-purple-500/40 via-blue-500/40 to-purple-500/40 rounded-3xl blur-3xl opacity-75 animate-pulse"></div>
+        <div className="absolute -inset-4 bg-gradient-to-r from-purple-400/30 via-blue-400/30 to-purple-400/30 rounded-2xl blur-2xl opacity-60"></div>
         
-        <button
-          onClick={handlePayment}
-          disabled={paymentState.isLoading}
-          className={`
-            group relative w-full px-8 py-5 rounded-xl font-bold text-xl transition-all duration-300 overflow-hidden border-3 shadow-2xl
-            ${paymentState.isLoading 
-              ? 'bg-gray-700 cursor-not-allowed text-gray-400 border-gray-600' 
-              : 'bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 text-white hover:from-purple-500 hover:via-blue-500 hover:to-purple-500 transform hover:scale-110 shadow-purple-500/50 border-purple-300 hover:border-white hover:shadow-purple-400/60'
-            }
-          `}
-        >
-          {/* Enhanced animated background for non-loading state */}
-          {!paymentState.isLoading && (
-            <>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-              {/* Additional bright glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-400/60 via-blue-400/60 to-purple-400/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              {/* Pulsing border effect */}
-              <div className="absolute inset-0 rounded-xl border-2 border-white/50 opacity-0 group-hover:opacity-100 animate-pulse"></div>
-            </>
-          )}
+        {/* Main button container with glass morphism */}
+        <div className="relative">
+          {/* Glass background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-xl rounded-2xl border border-white/30 shadow-2xl"></div>
           
-          {/* Button content with enhanced styling */}
-          <div className="relative flex items-center justify-center space-x-3">
-            {paymentState.isLoading ? (
+          {/* Inner glass reflection */}
+          <div className="absolute inset-[1px] bg-gradient-to-br from-white/10 to-transparent rounded-2xl"></div>
+          
+          {/* Top highlight reflection */}
+          <div className="absolute top-[1px] left-[1px] right-[1px] h-8 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-t-2xl opacity-60"></div>
+          
+          <button
+            onClick={handlePayment}
+            disabled={paymentState.isLoading}
+            className={`
+              group relative w-full px-10 py-6 rounded-2xl font-black text-2xl transition-all duration-500 overflow-hidden transform
+              ${paymentState.isLoading 
+                ? 'cursor-not-allowed scale-100 bg-gradient-to-br from-gray-700/80 via-gray-600/80 to-gray-700/80 text-gray-300 backdrop-blur-xl' 
+                : 'cursor-pointer hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-br from-purple-600/90 via-blue-600/90 to-purple-600/90 text-white hover:from-purple-500/95 hover:via-blue-500/95 hover:to-purple-500/95 shadow-2xl hover:shadow-purple-500/50 backdrop-blur-xl'
+              }
+            `}
+          >
+            {/* Enhanced glass effects for non-loading state */}
+            {!paymentState.isLoading && (
               <>
-                <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-400 border-t-transparent"></div>
-                <span className="text-lg">Processing Payment...</span>
-              </>
-            ) : (
-              <>
-                <div className="w-7 h-7 flex items-center justify-center bg-white/30 rounded-full border border-white/20">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                  </svg>
-                </div>
-                <span className="tracking-wide text-xl font-extrabold">Pay with Loopr</span>
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+                {/* Animated shimmer reflection */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
+                
+                {/* Hover glow overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+                
+                {/* Inner shadow for depth */}
+                <div className="absolute inset-0 rounded-2xl shadow-inner shadow-black/30"></div>
+                
+                {/* Active press effect */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-black/20 to-black/10 opacity-0 group-active:opacity-100 transition-opacity duration-100"></div>
+                
+                {/* Pulsing border highlight */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
               </>
             )}
-          </div>
-        </button>
+            
+            {/* Button content with glass effect */}
+            <div className="relative flex items-center justify-center space-x-4 z-10">
+              {paymentState.isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-8 w-8 border-3 border-gray-300 border-t-transparent shadow-lg"></div>
+                  <span className="text-xl font-bold tracking-wide drop-shadow-lg">Processing Payment...</span>
+                </>
+              ) : (
+                <>
+                  {/* Icon with glass effect */}
+                  <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-white/30 via-white/20 to-white/10 rounded-full border border-white/40 shadow-xl backdrop-blur-sm">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full"></div>
+                    <svg className="w-6 h-6 relative z-10 drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                    </svg>
+                  </div>
+                  
+                  {/* Text with enhanced styling */}
+                  <span className="tracking-wide text-2xl font-black drop-shadow-2xl bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent filter brightness-110">
+                    Pay with Loopr
+                  </span>
+                  
+                  {/* Status indicator with glass effect */}
+                  <div className="relative w-5 h-5">
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-400 via-green-300 to-green-500 rounded-full shadow-xl shadow-green-400/60 border border-green-200/50 backdrop-blur-sm">
+                      <div className="absolute inset-[1px] bg-gradient-to-br from-white/30 to-transparent rounded-full"></div>
+                      <div className="absolute inset-0 bg-green-300/80 rounded-full animate-ping opacity-75"></div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            {/* Bottom reflection line */}
+            <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+          </button>
+        </div>
       </div>
       
-      {/* Trust indicators */}
+      {/* Premium Trust Indicators with Glass Morphism */}
       {!paymentState.isLoading && (
-        <div className="mt-4 p-4 bg-gray-800/30 backdrop-blur-sm rounded-lg border border-purple-500/20">
-          <div className="flex items-center justify-center space-x-6 text-sm text-gray-300">
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <span className="font-medium">Secure Payment</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              <span className="font-medium">Lightning Fast</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <svg className="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span className="font-medium">Blockchain Verified</span>
+        <div className="mt-6 relative">
+          {/* Background glow */}
+          <div className="absolute -inset-2 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl blur-xl"></div>
+          
+          {/* Glass container */}
+          <div className="relative p-6 bg-gradient-to-br from-white/10 via-white/5 to-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl">
+            {/* Top reflection */}
+            <div className="absolute top-[1px] left-[1px] right-[1px] h-6 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-t-2xl"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-center space-x-6 text-sm text-gray-200 mb-4">
+                <div className="flex items-center space-x-2 bg-gradient-to-br from-green-900/40 via-green-800/30 to-green-900/40 px-4 py-3 rounded-xl border border-green-400/30 backdrop-blur-sm shadow-xl">
+                  <div className="relative">
+                    <svg className="w-5 h-5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                    <div className="absolute inset-0 bg-green-300/30 rounded-full blur-sm animate-pulse"></div>
+                  </div>
+                  <span className="font-bold text-green-200">Secure Payment</span>
+                </div>
+                
+                <div className="flex items-center space-x-2 bg-gradient-to-br from-blue-900/40 via-blue-800/30 to-blue-900/40 px-4 py-3 rounded-xl border border-blue-400/30 backdrop-blur-sm shadow-xl">
+                  <div className="relative">
+                    <svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <div className="absolute inset-0 bg-blue-300/30 rounded-full blur-sm animate-pulse"></div>
+                  </div>
+                  <span className="font-bold text-blue-200">Lightning Fast</span>
+                </div>
+                
+                <div className="flex items-center space-x-2 bg-gradient-to-br from-purple-900/40 via-purple-800/30 to-purple-900/40 px-4 py-3 rounded-xl border border-purple-400/30 backdrop-blur-sm shadow-xl">
+                  <div className="relative">
+                    <svg className="w-5 h-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div className="absolute inset-0 bg-purple-300/30 rounded-full blur-sm animate-pulse"></div>
+                  </div>
+                  <span className="font-bold text-purple-200">Blockchain Verified</span>
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <div className="inline-flex items-center bg-gradient-to-r from-gray-800/60 via-gray-700/60 to-gray-800/60 px-6 py-3 rounded-full border border-white/20 backdrop-blur-sm shadow-lg">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-full animate-pulse shadow-lg shadow-yellow-400/50"></div>
+                    <p className="text-sm text-gray-200 font-medium">
+                      Click the button above to start your secure payment
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

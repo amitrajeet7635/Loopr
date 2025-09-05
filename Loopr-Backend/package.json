@@ -1,0 +1,35 @@
+{
+  "name": "loopr-backend",
+  "version": "0.1.0",
+  "description": "Loopr subscription backend with Solana smart contracts",
+  "scripts": {
+    "build": "anchor build",
+    "test": "anchor test",
+    "deploy": "anchor deploy",
+    "clean": "anchor clean",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write \"**/*.{ts,js,json}\"",
+    "initialize": "ts-node scripts/initialize.ts",
+    "create-sample-plan": "ts-node scripts/create-sample-plan.ts"
+  },
+  "dependencies": {
+    "@clockwork-xyz/sdk": "^0.3.4",
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/spl-token": "^0.1.8",
+    "@solana/web3.js": "^1.98.4"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.9",
+    "@types/mocha": "^10.0.3",
+    "@types/node": "^20.8.7",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "chai": "^4.3.10",
+    "eslint": "^8.52.0",
+    "mocha": "^10.2.0",
+    "prettier": "^3.0.3",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}

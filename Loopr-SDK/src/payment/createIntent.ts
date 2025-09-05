@@ -24,7 +24,7 @@ export function createPaymentIntent(config: PaymentIntentConfig): string {
     memo
   });
 
-  // Replace 'solana:' prefix with 'loopr:' for Loopr mobile app compatibility
+  // Replace 'solana:' prefix with 'loopr://setautopay?' for Loopr mobile app compatibility
   const urlString = url.toString();
-  return urlString.replace(/^solana:/, 'loopr:'); // Returns: loopr:<address>?amount=...&memo=...
+  return urlString.replace(/^solana:/, 'loopr://setautopay?'); // Returns: loopr://setautopay?<address>&amount=...&memo=...
 }
