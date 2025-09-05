@@ -1,6 +1,6 @@
 {
   "name": "@amitrajeet7635/loopr-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/loopr-sdk.umd.js",
   "module": "dist/loopr-sdk.esm.js",
   "types": "dist/index.d.ts",
