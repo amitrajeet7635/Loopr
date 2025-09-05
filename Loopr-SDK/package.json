@@ -4,14 +4,27 @@
   "main": "dist/loopr-sdk.umd.js",
   "module": "dist/loopr-sdk.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/loopr-sdk.esm.js",
+      "require": "./dist/loopr-sdk.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": ["solana", "payment", "subscription", "sdk"],
   "author": "Amitrajeet",
   "license": "ISC",
-  "description": "",
+  "description": "SDK for Loopr subscription payments on Solana",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",

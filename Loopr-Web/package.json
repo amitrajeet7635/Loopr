@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:sdk": "cd ../Loopr-SDK && npm run build",
+    "build:all": "npm run build:sdk && npm run build",
+    "install:all": "cd ../Loopr-SDK && npm install && cd ../Loopr-Web && npm install",
     "lint": "eslint .",
     "preview": "vite preview"
   },
