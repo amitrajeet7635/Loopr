@@ -1,17 +1,38 @@
 {
-  "name": "loopr-sdk",
-  "version": "1.0.0",
+  "name": "@amitrajeet7635/loopr-sdk",
+  "version": "1.0.1",
   "main": "dist/loopr-sdk.umd.js",
   "module": "dist/loopr-sdk.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/loopr-sdk.esm.js",
+      "require": "./dist/loopr-sdk.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
+  "keywords": [
+    "solana",
+    "payment",
+    "subscription",
+    "sdk"
+  ],
   "author": "Amitrajeet",
   "license": "ISC",
-  "description": "",
+  "description": "SDK for Loopr subscription payments on Solana",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
@@ -29,5 +50,14 @@
     "buffer": "^6.0.3",
     "qrcode": "^1.5.4",
     "react": "^19.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitrajeet7635/Loopr.git",
+    "directory": "Loopr-SDK"
+  },
+  "bugs": {
+    "url": "https://github.com/amitrajeet7635/Loopr/issues"
+  },
+  "homepage": "https://github.com/amitrajeet7635/Loopr#readme"
 }

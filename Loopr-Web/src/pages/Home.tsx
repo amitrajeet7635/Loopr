@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PlanCard } from '../components/PlanCard';
+import looprLogo from '../assets/loopr-icon.png';
+import looprIcon from '../assets/loopr-logo-icon.png';
 
 // Mock plans data based on the SDK config
 const plans = [
@@ -62,18 +64,15 @@ export const Home: React.FC = () => {
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-blue-400 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">L</span>
-              </div>
-              <span className="text-white text-xl font-bold">Loopr</span>
+              <img 
+                src={looprIcon} 
+                alt="Loopr Logo" 
+                className="w-8 h-8 rounded-lg"
+              />
+              <span className="text-white text-xl font-bold">Loopr Services</span>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-              <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</a>
-              <a href="#docs" className="text-gray-300 hover:text-white transition-colors">Docs</a>
-              <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all">
-                Get Started
-              </button>
+              {/* Navigation items removed as requested */}
             </div>
           </div>
         </nav>
@@ -82,6 +81,14 @@ export const Home: React.FC = () => {
         <div className="container mx-auto px-6 py-20">
           <div className="text-center mb-16">
             <div className="animate-fade-in-up">
+              {/* Hero Logo */}
+              <div className="flex justify-center mb-8">
+                <img 
+                  src={looprLogo} 
+                  alt="Loopr Logo" 
+                  className=" h-30 rounded-2xl animate-float"
+                />
+              </div>
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
                 Web3 Payment
                 <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
@@ -91,7 +98,7 @@ export const Home: React.FC = () => {
             </div>
             <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
               <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Accept crypto payments seamlessly with Solana Pay. 
+                Accept crypto payments seamlessly with Loopr Pay. 
                 Built for developers, designed for scale, powered by blockchain technology.
               </p>
             </div>
@@ -103,9 +110,6 @@ export const Home: React.FC = () => {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                   <span className="relative">Start Building</span>
-                </button>
-                <button className="border border-gray-600 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:border-gray-400 hover:text-white hover:bg-gray-800/30 transition-all duration-200 hover:scale-105">
-                  View Demo
                 </button>
               </div>
             </div>
@@ -120,7 +124,7 @@ export const Home: React.FC = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Lightning Fast</h3>
-              <p className="text-gray-400">Instant payments with Solana's high-speed blockchain infrastructure</p>
+              <p className="text-gray-400">Instant payments with high-speed blockchain infrastructure</p>
             </div>
 
             <div className="group bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-purple-500/50 transition-all duration-300 hover:scale-105 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
@@ -167,23 +171,71 @@ export const Home: React.FC = () => {
             ))}
           </div>
 
-          {/* Stats Section */}
-          <div className="grid md:grid-cols-4 gap-8 mt-20 pt-20 border-t border-gray-800">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">10K+</div>
-              <div className="text-gray-400">Transactions</div>
+          {/* Technology Stack Section */}
+          <div className="mt-20 pt-20 border-t border-gray-800">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-white mb-4">
+                Built on Modern Web3 Technology
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Loopr leverages cutting-edge blockchain technology to provide seamless subscription management and payment processing for the decentralized web.
+              </p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">500+</div>
-              <div className="text-gray-400">Developers</div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Solana Powered</h3>
+                <p className="text-gray-400 text-sm">
+                  Built on Solana's high-performance blockchain for fast, low-cost transactions
+                </p>
+              </div>
+
+              <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Smart Contracts</h3>
+                <p className="text-gray-400 text-sm">
+                  Automated subscription management through secure smart contract protocols
+                </p>
+              </div>
+
+              <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Developer SDK</h3>
+                <p className="text-gray-400 text-sm">
+                  Simple integration with React components and TypeScript support
+                </p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">99.9%</div>
-              <div className="text-gray-400">Uptime</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">$2M+</div>
-              <div className="text-gray-400">Volume</div>
+
+            <div className="mt-12 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/20 rounded-xl p-8">
+              <div className="text-center">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  The Future of Subscription Payments
+                </h3>
+                <p className="text-gray-300 max-w-2xl mx-auto mb-6">
+                  Loopr eliminates the complexity of traditional payment processors by leveraging blockchain technology. 
+                  No more chargebacks, reduced fees, and instant global payments - all while maintaining full decentralization.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4 text-sm">
+                  <span className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">Zero Chargebacks</span>
+                  <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full">Global Payments</span>
+                  <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full">Low Fees</span>
+                  <span className="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full">Instant Settlement</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -193,11 +245,15 @@ export const Home: React.FC = () => {
           <div className="container mx-auto px-6 py-8">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                <div className="w-6 h-6 bg-gradient-to-r from-purple-400 to-blue-400 rounded"></div>
-                <span className="text-white font-semibold">Loopr</span>
+                <img 
+                  src={looprIcon} 
+                  alt="Loopr Logo" 
+                  className="w-6 h-6 rounded"
+                />
+                <span className="text-white font-semibold">Loopr Services</span>
               </div>
               <div className="text-gray-400 text-sm">
-                © 2025 Loopr. Built with ❤️ for Web3 developers.
+                © 2025 Loopr Services. Built with ❤️ for Web3 developers.
               </div>
             </div>
           </div>
