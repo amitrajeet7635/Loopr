@@ -3,19 +3,20 @@ package com.loopr.app.navigation
 import android.net.Uri
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.loopr.app.ui.presentation.screens.HomeScreen
+import com.loopr.app.ui.presentation.screens.ScannerScreen
 import com.loopr.app.ui.presentation.screens.SignInScreen
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.loopr.app.ui.presentation.viewmodel.AuthViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.collectAsState
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 
 @Composable
 fun LooprNavigation(
@@ -68,8 +69,13 @@ fun LooprNavigation(
                             popUpTo(0)
                         }
                     }
-                }
+                },
+                navController = navController
             )
+        }
+
+        composable(route = LooprDestinations.QR_SCANNER) {
+            ScannerScreen(onQrCodeScanned = {})
         }
 
     }

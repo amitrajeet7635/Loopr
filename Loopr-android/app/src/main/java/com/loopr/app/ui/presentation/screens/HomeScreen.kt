@@ -1,5 +1,7 @@
 package com.loopr.app.ui.presentation.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -54,6 +56,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +72,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -77,8 +81,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.loopr.app.R
+import com.loopr.app.navigation.LooprDestinations
 import com.loopr.app.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.app.ui.theme.LooprCyan
 import com.loopr.app.ui.theme.LooprCyanVariant
@@ -86,7 +96,10 @@ import com.web3auth.core.types.UserInfo
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier, userInfo: UserInfo?, onLogout: () -> Unit
+    modifier: Modifier = Modifier,
+    userInfo: UserInfo?,
+    onLogout: () -> Unit,
+    navController: NavController
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -95,7 +108,10 @@ fun HomeScreen(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             LooprBottomNavigationBar(
-                selectedTab = selectedTab, onTabSelected = { selectedTab = it })
+                selectedTab = selectedTab,
+                onTabSelected = { selectedTab = it },
+                navController = navController
+            )
         },
         contentWindowInsets = WindowInsets(0)
     ) { paddingValues ->
@@ -124,9 +140,10 @@ fun HomeScreen(
 }
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun LooprBottomNavigationBar(
-    selectedTab: Int, onTabSelected: (Int) -> Unit
+    selectedTab: Int, onTabSelected: (Int) -> Unit, navController: NavController
 ) {
     val navigationItems = listOf(
         BottomNavItem("Home", Icons.Outlined.Home, Icons.Filled.Home),
@@ -232,6 +249,23 @@ private fun LooprBottomNavigationBar(
             }
         }
 
+        val context = LocalContext.current
+        val permissionState = rememberPermissionState(Manifest.permission.CAMERA)
+
+        val hasCameraPermission = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+
+
+        var shouldNavigate by remember { mutableStateOf(false) }
+
+        LaunchedEffect(permissionState.status.isGranted, shouldNavigate) {
+            if (shouldNavigate && permissionState.status.isGranted) {
+                navController.navigate(LooprDestinations.QR_SCANNER)
+                shouldNavigate = false // reset
+            }
+        }
+
         // FAB positioned perfectly in the center cutout
         Box(
             modifier = Modifier
@@ -240,7 +274,14 @@ private fun LooprBottomNavigationBar(
         ) {
             // Enhanced FAB with better integration
             FloatingActionButton(
-                onClick = { /* TODO: Implement QR scan */ },
+                onClick = {
+                    if (hasCameraPermission) {
+                        navController.navigate(route = LooprDestinations.QR_SCANNER)
+                    } else {
+                        permissionState.launchPermissionRequest()
+                        shouldNavigate = true
+                    }
+                },
                 modifier = Modifier.size(68.dp),
                 shape = CircleShape,
                 containerColor = LooprCyan,

@@ -15,4 +15,5 @@ object LooprDestinations {
     const val HOME = "home"
     const val SUBSCRIPTIONS = "subscriptions"
     const val PROFILE = "profile"
+    const val QR_SCANNER = "qr_scanner"
 }
