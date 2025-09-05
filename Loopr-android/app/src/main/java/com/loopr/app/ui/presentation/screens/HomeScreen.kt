@@ -3,6 +3,7 @@ package com.loopr.app.ui.presentation.screens
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -53,7 +54,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -62,12 +62,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,6 +78,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import coil3.compose.AsyncImage
+import com.loopr.app.R
 import com.loopr.app.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.app.ui.theme.LooprCyan
 import com.loopr.app.ui.theme.LooprCyanVariant
@@ -83,9 +86,7 @@ import com.web3auth.core.types.UserInfo
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    userInfo: UserInfo?,
-    onLogout: () -> Unit
+    modifier: Modifier = Modifier, userInfo: UserInfo?, onLogout: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -277,8 +278,8 @@ private fun HomeContent(userInfo: UserInfo?, onLogout: () -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp))
-    {
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         item {
             LooprTopAppBar(userInfo = userInfo, onLogout = onLogout)
         }
@@ -414,8 +415,7 @@ private data class BottomNavItem(
 
 @Composable
 private fun LooprTopAppBar(
-    userInfo: UserInfo?,
-    onLogout: () -> Unit
+    userInfo: UserInfo?, onLogout: () -> Unit
 ) {
     var showDropdown by remember { mutableStateOf(false) }
 
@@ -426,34 +426,23 @@ private fun LooprTopAppBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Loopr Logo/Brand
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Logo placeholder - will be replaced with actual logo later
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        brush = Brush.radialGradient(
-                            colors = listOf(LooprCyan, LooprCyanVariant)
-                        )
-                    ), contentAlignment = Alignment.Center
+                    .height(50.dp)
+                    .width(80.dp), contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "L", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White
+                Image(
+                    painterResource(id = R.drawable.loopr_logo),
+                    contentDescription = "Loopr Logo",
+                    modifier = Modifier.scale(0.9f)
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-            Text(
-                text = "Loopr",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
         }
 
         // Account Avatar with Dropdown
