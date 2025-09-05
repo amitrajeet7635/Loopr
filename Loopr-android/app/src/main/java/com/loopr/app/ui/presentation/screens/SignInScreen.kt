@@ -46,9 +46,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -194,32 +196,9 @@ fun SignInContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(bottom = 48.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(LooprCyan, LooprCyanVariant)
-                            )
-                        ), contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "L",
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
+                Image(painterResource(id = R.drawable.loopr_logo), contentDescription = "Loopr Logo", modifier = Modifier.scale(0.8f))
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = "Loopr",
-                    fontSize = 36.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = "Subscriptions made simple",
@@ -332,6 +311,9 @@ fun SignInContent(
                 text = "Continue with Google",
                 onClick = { onLogin(LoginParams(Provider.GOOGLE)) },
                 iconRes = R.drawable.google_logo,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                borderColor = MaterialTheme.colorScheme.outline,
                 enabled = !isLoading
             )
 
@@ -339,6 +321,9 @@ fun SignInContent(
                 text = "Continue with MetaMask",
                 onClick = { /* handle MetaMask login */ },
                 iconRes = R.drawable.metamask_icon_fox,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                borderColor = MaterialTheme.colorScheme.outline,
                 enabled = !isLoading
             )
         }
@@ -394,7 +379,7 @@ private fun SignInButton(
     isLoading: Boolean = false
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier.padding(vertical = 6.dp)
             .fillMaxWidth()
             .height(56.dp)
             .clickable(enabled = enabled && !isLoading) { if (enabled && !isLoading) onClick() },
