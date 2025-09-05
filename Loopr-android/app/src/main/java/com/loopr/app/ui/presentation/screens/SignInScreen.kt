@@ -45,7 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -58,10 +58,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.loopr.app.R
 import com.loopr.app.ui.presentation.components.LooprLoadingUI
+import com.loopr.app.ui.presentation.viewmodel.AuthViewModel
 import com.loopr.app.ui.theme.LooprCyan
-import com.loopr.app.ui.theme.LooprCyanVariant
 import com.web3auth.core.Web3Auth
 import com.web3auth.core.types.BuildEnv
 import com.web3auth.core.types.ExtraLoginOptions
@@ -88,6 +89,8 @@ fun getActivity(): Activity {
 fun SignInScreen(
     deepLinkUri: Uri? = null,
     onAuthenticationSuccess: () -> Unit = {},
+    authViewModel: AuthViewModel = viewModel(),
+    shouldLogout: Boolean = false
 ) {
     var email by remember { mutableStateOf("") }
     var isAuthenticated by remember { mutableStateOf(false) }
@@ -109,6 +112,14 @@ fun SignInScreen(
         )
     }
 
+    // Handle logout if requested
+    LaunchedEffect(shouldLogout) {
+        if (shouldLogout) {
+            web3Auth.logout()
+            authViewModel.setUserInfo(null)
+        }
+    }
+
     // Handle deep link and check session
     LaunchedEffect(deepLinkUri) {
         isInitialized = false
@@ -122,10 +133,12 @@ fun SignInScreen(
 
     when {
         !isInitialized -> {
-            LooprLoadingUI(subtitle = "Checking session...")
+            LooprLoadingUI(subtitle = "Setting things up for you...")
         }
 
         isAuthenticated -> {
+            // Set userInfo in AuthViewModel
+            authViewModel.setUserInfo(web3Auth.getUserInfo())
             onAuthenticationSuccess()
         }
 
@@ -139,6 +152,7 @@ fun SignInScreen(
                     web3Auth.login(loginParams).whenComplete { result, error ->
                         isLoading = false
                         if (error == null && result.userInfo != null) {
+                            authViewModel.setUserInfo(result.userInfo)
                             onAuthenticationSuccess()
                         } else {
                             Toast.makeText(activity, error?.message, Toast.LENGTH_LONG).show()
@@ -179,32 +193,13 @@ fun SignInContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(bottom = 48.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(LooprCyan, LooprCyanVariant)
-                            )
-                        ), contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "L",
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = "Loopr",
-                    fontSize = 36.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                Image(
+                    painterResource(id = R.drawable.loopr_logo),
+                    contentDescription = "Loopr Logo",
+                    modifier = Modifier.scale(0.8f)
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     text = "Subscriptions made simple",
@@ -228,7 +223,7 @@ fun SignInContent(
             OutlinedTextField(
                 value = email,
                 onValueChange = { onEmailChange(it) },
-                placeholder = { Text("Continue with email...") },
+                placeholder = { Text("Continue with email") },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Email,
@@ -317,6 +312,9 @@ fun SignInContent(
                 text = "Continue with Google",
                 onClick = { onLogin(LoginParams(Provider.GOOGLE)) },
                 iconRes = R.drawable.google_logo,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                borderColor = MaterialTheme.colorScheme.outline,
                 enabled = !isLoading
             )
 
@@ -324,6 +322,9 @@ fun SignInContent(
                 text = "Continue with MetaMask",
                 onClick = { /* handle MetaMask login */ },
                 iconRes = R.drawable.metamask_icon_fox,
+                backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                borderColor = MaterialTheme.colorScheme.outline,
                 enabled = !isLoading
             )
         }
@@ -353,7 +354,7 @@ fun SignInContent(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Loading...",
+                            text = "Authenticating",
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -380,6 +381,7 @@ private fun SignInButton(
 ) {
     Card(
         modifier = modifier
+            .padding(vertical = 6.dp)
             .fillMaxWidth()
             .height(56.dp)
             .clickable(enabled = enabled && !isLoading) { if (enabled && !isLoading) onClick() },

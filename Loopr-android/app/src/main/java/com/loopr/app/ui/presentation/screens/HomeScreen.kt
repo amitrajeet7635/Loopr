@@ -3,6 +3,7 @@ package com.loopr.app.ui.presentation.screens
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -53,7 +54,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -62,12 +62,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,13 +78,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import coil3.compose.AsyncImage
+import com.loopr.app.R
 import com.loopr.app.ui.presentation.components.UpcomingPaymentsSection
 import com.loopr.app.ui.theme.LooprCyan
 import com.loopr.app.ui.theme.LooprCyanVariant
+import com.web3auth.core.types.UserInfo
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier, userInfo: UserInfo?, onLogout: () -> Unit
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
 
@@ -110,7 +114,7 @@ fun HomeScreen(
                 )
         ) {
             when (selectedTab) {
-                0 -> HomeContent()
+                0 -> HomeContent(userInfo = userInfo, onLogout = onLogout)
                 1 -> SubscriptionsScreen()
                 2 -> WalletContent()
                 3 -> RewardsContent()
@@ -269,15 +273,15 @@ private fun LooprBottomNavigationBar(
 }
 
 @Composable
-private fun HomeContent() {
+private fun HomeContent(userInfo: UserInfo?, onLogout: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp))
-    {
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         item {
-            LooprTopAppBar()
+            LooprTopAppBar(userInfo = userInfo, onLogout = onLogout)
         }
 
         item {
@@ -411,12 +415,9 @@ private data class BottomNavItem(
 
 @Composable
 private fun LooprTopAppBar(
-
+    userInfo: UserInfo?, onLogout: () -> Unit
 ) {
     var showDropdown by remember { mutableStateOf(false) }
-
-
-    val userInfo = null
 
     Row(
         modifier = Modifier
@@ -425,34 +426,23 @@ private fun LooprTopAppBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Loopr Logo/Brand
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Logo placeholder - will be replaced with actual logo later
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(
-                        brush = Brush.radialGradient(
-                            colors = listOf(LooprCyan, LooprCyanVariant)
-                        )
-                    ), contentAlignment = Alignment.Center
+                    .height(50.dp)
+                    .width(80.dp), contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "L", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White
+                Image(
+                    painterResource(id = R.drawable.loopr_logo),
+                    contentDescription = "Loopr Logo",
+                    modifier = Modifier.scale(0.9f)
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
-            Text(
-                text = "Loopr",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
         }
 
         // Account Avatar with Dropdown
@@ -471,31 +461,30 @@ private fun LooprTopAppBar(
                     .clickable { showDropdown = !showDropdown },
                 contentAlignment = Alignment.Center
             ) {
-                // AsyncImage to load and display the actual profile image
-//                if (!userInfo?.profileImage.isNullOrEmpty()) {
-//                    var isLoading by remember { mutableStateOf(true) }
-//                    var hasError by remember { mutableStateOf(false) }
-//
-//                    AsyncImage(
-//                        model = userInfo?.profileImage,
-//                        contentDescription = "Account",
-//                        modifier = Modifier
-//                            .size(32.dp)
-//                            .clip(CircleShape),
-//                        contentScale = ContentScale.Crop,
-//                        onLoading = { isLoading = true; hasError = false },
-//                        onSuccess = { isLoading = false; hasError = false },
-//                        onError = { isLoading = false; hasError = true })
-//
-//                    if (isLoading || hasError) {
-//                        Icon(
-//                            imageVector = Icons.Filled.Person,
-//                            contentDescription = "Account",
-//                            tint = LooprCyan,
-//                            modifier = Modifier.size(24.dp)
-//                        )
-//                    }
-//                } else {
+                if (!userInfo?.profileImage.isNullOrEmpty()) {
+                    var isLoading by remember { mutableStateOf(true) }
+                    var hasError by remember { mutableStateOf(false) }
+
+                    AsyncImage(
+                        model = userInfo?.profileImage,
+                        contentDescription = "Account",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop,
+                        onLoading = { isLoading = true; hasError = false },
+                        onSuccess = { isLoading = false; hasError = false },
+                        onError = { isLoading = false; hasError = true })
+
+                    if (isLoading || hasError) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Account",
+                            tint = LooprCyan,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                } else {
                     // Show default icon when no profile image URL is available
                     Icon(
                         imageVector = Icons.Filled.Person,
@@ -504,7 +493,7 @@ private fun LooprTopAppBar(
                         modifier = Modifier.size(24.dp)
                     )
                 }
-//            }
+            }
 
             // Dropdown Menu with real user data
             DropdownMenu(
@@ -519,13 +508,13 @@ private fun LooprTopAppBar(
                 DropdownMenuItem(text = {
                     Column {
                         Text(
-                            text = "User",
+                            text = userInfo?.name ?: "User",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "No email",
+                            text = userInfo?.email ?: "No email",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -564,7 +553,7 @@ private fun LooprTopAppBar(
                     )
                 }, onClick = {
                     showDropdown = false
-//                    authViewModel.logout()
+                    onLogout()
                 }, leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.ExitToApp,
