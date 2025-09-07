@@ -129,20 +129,20 @@ Major Highlights of your project:
 ### Loopr - Mobile APP:
 - Language: Kotlin, Java
 - Authentication: Web3Auth (wallet onboarding) | Embedded Wallets 
-- Payments: sol4k sdk
+- Payments: sol4k sdk!
+
 ---
 ## How it looks (UI Walkthrough)! 
 
 ### Loopr Mobile App:
 
 <div align="left">
-  <img src="https://github.com/user-attachments/assets/a1c856a6-a1b5-401e-8173-4f8e3eac15d8" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/0486ac41-c128-4cf5-a383-875efb71265f" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/45a5b366-cf46-4091-ae15-a2cf83150421" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/563e9a21-5f5e-4a04-bec4-c443574aa03c" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/ee69e092-a987-4e47-9fbd-d2e50da09dfa" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/937da339-e5ae-45a9-a1c0-b62e4b45d05e" width="170" style="margin-right: 20px;" />
-  <img src="https://github.com/user-attachments/assets/c7e46c6b-7693-4ce7-9c25-8304b2c6c563" width="170" style="margin-right: 20px;" />
+
+  <img src="https://github.com/user-attachments/assets/178a6749-4155-4728-b793-738d8928be83" width="170" style="margin-right: 20px;" />
+  <img src="https://github.com/user-attachments/assets/8d73ced4-8aea-4b2a-8485-6283fde467ef" width="170" style="margin-right: 20px;" />
+  <img src="https://github.com/user-attachments/assets/b02093ee-b2d1-4ffa-8d42-3b1f84b697ed" width="170" style="margin-right: 20px;" />
+  <img src="(https://github.com/user-attachments/assets/6ac3bc41-e1ff-495c-8a9d-4af119cf6aa0" width="170" style="margin-right: 20px;" />
+
 </div>
 
 
