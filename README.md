@@ -37,22 +37,22 @@ Loopr is a decentralized subscription payment and management platform built on S
 
 ## 🎯 Objective
 
-**What problem does our project solve ?**  
-ZAAP empowers teens to spend digitally using Scan & Pay — no bank account, no KYC, just a delegated Web3 wallet.
-Teens enjoy autonomy; parents stay in control with real-time monitoring, wallet linking, and spending limits via a secure dashboard.
+### What problem does our project solve?
+Loopr simplifies recurring crypto payments by bringing **subscription management** to Solana. Today, dApps and Web3 merchants struggle with handling recurring payments, cross-chain fragmentation, and smooth onboarding for non-crypto-native users. Loopr solves this by providing a **Web SDK and mobile application** that enable seamless subscription setup, checkout with Solana Pay, and reward-based engagement — all without custodial risk.
 
-**Who does it serves ?**
-ZAAP serves both teenagers and their guardians by bridging the gap between financial independence and parental oversight. It empowers teens—especially those aged 13 to 19—to make digital payments using a secure, privacy-first solution without the need for a traditional bank account or KYC checks. At the same time, ZAAP equips parents with a powerful web-based dashboard to monitor transactions, set spending limits, and fund their child's wallet. This dual-user approach ensures that while teens gain real-world financial experience, parents maintain visibility and control—creating a safe, modern financial ecosystem built for the next generation.
+### Who does it serve?
+Loopr serves both **merchants** and **end-users**. For merchants, it offers a plug-and-play SDK to integrate subscriptions directly into their platforms, eliminating the need to build complex billing infrastructure. For users, it provides a smooth checkout experience, clear subscription management, and reward incentives for loyalty. Developers gain a universal tool for recurring payments, while end-users get **transparency, control, and convenience**.
 
-**Real-World Use Case:**
-Meet Aryan, a 16-year-old student in Mumbai. He frequently shops online, pays at local cafés, and subscribes to learning platforms. Traditionally, he'd need to borrow his parent's card or rely on cash — both inconvenient and lacking independence.
-With ZAAP, Aryan logs into the mobile app using MetaMask Delegation Toolkit, gaining access to his smart wallet. When he visits a bookstore, he simply scans a QR code/or swipe the metamask card and pays — the transaction is authorized via the linked MetaMask or Circle wallet his parents fund.
-On the other side, Aryan's mother uses the ZAAP Parental Dashboard on the web to:
-  - Add funds to Aryan's wallet,
-  - Set monthly limits,
-  - And monitor his spending activity in real-time.
+### Real-World Use Case:
+Meet Riya, a freelance designer in Bangalore who subscribes to multiple Web3 design tools and AI platforms. Traditionally, she would need to manually send tokens each month or rely on clunky, centralized fiat services. With Loopr, Riya simply selects the “Pro Plan” from a dApp’s pricing page. On checkout, she clicks **“Pay with Loopr”**, which instantly generates a Solana Pay QR code. She scans and pays once — her subscription is now automated on-chain.
 
-No need for a traditional bank, no KYC hurdles — just seamless, privacy-respecting teen finance.
+On the merchant side, the AI platform’s developer integrates Loopr SDK in just a few lines of code, gaining access to:
+
+* **Plan configuration** (monthly, quarterly, yearly pricing in USD → auto-converted to SOL),
+* **Subscription management** (renewals, cancellations),
+* **Reward points** to incentivize long-term users.
+
+No manual invoicing, no fragmented tools — just **seamless, transparent subscription management on Solana**.
 
 ---
 
