@@ -67,7 +67,6 @@ Managing subscriptions today is fragmented and frustrating. Subscriptions are sc
 We chose this problem because subscriptions are the backbone of modern digital life — streaming, gaming, SaaS, fitness, education — yet the tools to manage them are outdated.
 
 Loopr brings on-chain transparency, one-click control, and automated organization so users never feel locked in, overcharged, or lost in spreadsheets again.
-We believe financial literacy and independence should start early, and ZAAP offers a way to do that without compromising security, privacy, or trust.
 
 ### **How we solved this:**
 1. **Loopr SDK for Recurring Payments** — We built a plug-and-play SDK that any company can integrate into their apps or websites. It enables recurring subscription payments powered by Solana Pay — without the complexity of managing autopay across banks and wallets.
