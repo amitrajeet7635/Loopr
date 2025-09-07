@@ -24,14 +24,14 @@
 Loopr is a decentralized subscription payment and management platform built on Solana. It enables businesses to integrate seamless subscription payments into their applications and allows users to manage all their subscriptions in one place.
 
 ## Live Demos & Deliverables
-- **Demo Video (Click below to watch the youtube video):** - [Zaap BuildShowcase | Project Demo](https://youtu.be/sL7EbgwUi9M) <br>
+- **Demo Video (Click below to watch the youtube video):** - [Loopr BuildShowcase | Project Demo](https://youtu.be/sL7EbgwUi9M) <br>
 <a href="https://youtu.be/sL7EbgwUi9M" target="_blank">
   <img src="https://github.com/user-attachments/assets/f2e65157-17ee-49bb-a9ec-856a4ee6e553" alt="Build Showcase" width="400">
 </a>
 
-- **Pitch Deck / PPT Link:** [Zaap Pitch Deck](https://www.loom.com/share/c6d53a0bf8c34ac182cd7467cb829208?sid=c67c0044-8307-4b74-a7ab-6b784b6ad043)
-- **Backend Hosted on Vercel:** [zaap-backend.vercel.app](https://zaap-backend.vercel.app/)
-- **Android App APK:** [Download Zaap APK (Android)](https://drive.google.com/drive/folders/1G7T06gCsx93fCXGpHH7SzYnNDyLpwLYx?usp=sharing)
+- **Pitch Deck / PPT Link:** [Loopr Pitch Deck](https://www.loom.com/share/de900f9930114f8abc52eef0b2a8f072?sid=47055120-c49e-4e6f-8514-af0758b1953d)
+- **Loopr Web SDK NPM Package :** [zaap-backend.vercel.app](https://zaap-backend.vercel.app/)
+- **Android App APK:** [Download Loopr APK (Android)](https://drive.google.com/drive/folders/1G7T06gCsx93fCXGpHH7SzYnNDyLpwLYx?usp=sharing)
 
 ---
 
@@ -66,21 +66,14 @@ We chose this problem because subscriptions are the backbone of modern digital l
 Loopr brings on-chain transparency, one-click control, and automated organization so users never feel locked in, overcharged, or lost in spreadsheets again.
 We believe financial literacy and independence should start early, and ZAAP offers a way to do that without compromising security, privacy, or trust.
 
-### **Key challenges we addressed:**
-1. Integrating MetaMask Delegation Toolkit — Setting up secure delegated smart accounts for teens and parents.
-2. Hybrid Login Flow — Combining wallet-based and social logins using Web3Auth for seamless onboarding.
-3. Zaap CircleLink - Connecting Child Wallet with the Parent wallet with just a QR Scan - as simple as that (check demo for real experience)
-4. QR-Based Scan & Pay — Implementing a smooth, real-time scan-and-pay experience for teens on mobile.
-5. Parental Monitoring Dashboard — Creating a responsive web dashboard to track and manage child spending.
-   
-### **Ahhh! Some pivots, brainstorms, or breakthroughs during hacking:**
-1. Switched from Traditional Wallets to Smart Accounts — We shifted to MetaMask DTK for flexible, delegated wallet access without compromising control, this also gave us added advantages.
-2. Reduction of Gas Fees - As we have used Metamask DTK, we got the advantage, to sponsor gas fees enabling smooth user experience.
-3. Brainstormed Dual Experience (Parent + Teen) — Decided to split experiences across mobile (for teens) and web (for parents) to optimize UX per user role.
-4. Breakthrough Using Circle & MetaMask Card for Spending — Realized we could route transactions via MetaMask/Circle cards to simulate real-world teen payments.
-5. Child and Parent Wallet Connect - We engineered this thing on our own, and it has been a major breakthru. Connecting wallets was never more simpler than this.
-6. At first we thought to go with Linea, but then due to some problems/issues from their dev end, we shifted to ethereum.
+### **How we solved this:**
+1. **Loopr SDK for Recurring Payments** — We built a plug-and-play SDK that any company can integrate into their apps or websites. It enables recurring subscription payments powered by Solana Pay — without the complexity of managing autopay across banks and wallets.
+2. **One App for All Subscriptions** — Instead of scattered autopays, multiple cards, and messy tracking, Loopr provides a single dashboard where users can see, manage, pause, or cancel all subscriptions in one place. It’s not just another analytics app — it’s a control center for your digital life.
+3. **Solana QR Support** — Loopr works seamlessly with Solana Pay QRs. For dynamic Loopr QRs, subscription details are auto-filled. For static Solana QRs, users simply enter details manually, making it universally compatible.
+4. **Smooth Onboarding with Web3Auth** — We integrated Web3Auth social logins so users can sign in with familiar Web2 methods (Google, Twitter, etc.) while still being onboarded into a Web3 wallet. This lowers friction and makes adoption easy.
+5. **Rewards Layer with NFTs** — Every payment interaction (scanning a QR, subscribing, renewing) saves user metadata and subscription analytics on-chain. This allows companies to send curated NFT rewards that strengthen community engagement. The more loyal the user, the more exclusive the rewards.
 
+   
 ### ✨ Key Features
 
 Major Highlights of your project:
@@ -151,7 +144,6 @@ Major Highlights of your project:
 </div>
 
 
-
 ### Web SDK:
 <div align="left", gap = 30px>
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/8f6764b0-1ffc-4333-b9aa-663164a3d8cb" />
@@ -159,6 +151,15 @@ Major Highlights of your project:
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/86bb86ed-aee9-41d1-a7a5-77d3927c4b19" />
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/2695cf98-ddb5-48f3-bac5-a4d63d866821" />
 </div>
+
+
+### **Ahhh! Some pivots, brainstorms, or breakthroughs during hacking:**
+1. Switched from Traditional Wallets to Smart Accounts — We shifted to MetaMask DTK for flexible, delegated wallet access without compromising control, this also gave us added advantages.
+2. Reduction of Gas Fees - As we have used Metamask DTK, we got the advantage, to sponsor gas fees enabling smooth user experience.
+3. Brainstormed Dual Experience (Parent + Teen) — Decided to split experiences across mobile (for teens) and web (for parents) to optimize UX per user role.
+4. Breakthrough Using Circle & MetaMask Card for Spending — Realized we could route transactions via MetaMask/Circle cards to simulate real-world teen payments.
+5. Child and Parent Wallet Connect - We engineered this thing on our own, and it has been a major breakthru. Connecting wallets was never more simpler than this.
+6. At first we thought to go with Linea, but then due to some problems/issues from their dev end, we shifted to ethereum.
 
 
 ## 🧪 What’s Working Now?
