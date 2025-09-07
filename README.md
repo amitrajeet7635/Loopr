@@ -24,9 +24,10 @@
 Loopr is a decentralized subscription payment and management platform built on Solana. It enables businesses to integrate seamless subscription payments into their applications and allows users to manage all their subscriptions in one place.
 
 ## Live Demos & Deliverables
-- **Demo Video (Click below to watch the youtube video):** - [Loopr BuildShowcase | Project Demo](https://youtu.be/sL7EbgwUi9M) <br>
-<a href="https://youtu.be/sL7EbgwUi9M" target="_blank">
-  <img src="https://github.com/user-attachments/assets/f2e65157-17ee-49bb-a9ec-856a4ee6e553" alt="Build Showcase" width="400">
+- **Demo Video (Click below to watch the youtube video):** - [Loopr BuildShowcase | Project Demo](https://youtu.be/GGL45ifVnbM) <br>
+<a href="https://youtu.be/GGL45ifVnbM" target="_blank">
+<img width="400"  alt="BUILDSHOWCASE LOOPR" src="https://github.com/user-attachments/assets/57101dff-7f40-4e7e-ae1c-e2e151fb25df" />
+
 </a>
 
 - **Pitch Deck / PPT Link:** [Loopr Pitch Deck](https://www.loom.com/share/de900f9930114f8abc52eef0b2a8f072?sid=47055120-c49e-4e6f-8514-af0758b1953d)
