@@ -147,11 +147,11 @@ Major Highlights of your project:
 
 
 ### Web SDK:
-<div align="left", gap = 30px>
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/8f6764b0-1ffc-4333-b9aa-663164a3d8cb" />
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/b6fa038b-7557-4503-a67a-9dfd588b5acf" />
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/86bb86ed-aee9-41d1-a7a5-77d3927c4b19" />
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/2695cf98-ddb5-48f3-bac5-a4d63d866821" />
+<div align="left">
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/e7ced827-678a-4586-896c-a31f76537bf8" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/f4c34ab7-3d15-4fc2-b0d0-996fbb3948b6" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/697ed4da-1683-493e-8d93-7a9df4f3013f" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/d0e0abb9-47a2-43da-b033-5fa11ca188c8" />
 </div>
 
 
