@@ -88,23 +88,23 @@ Major Highlights of your project:
 - ✅ On-chain transparency with verifiable transactions and spend insights
 
 
-### 🧠 Why This Makes Sense for MetaMask Card Users — And Where It’s Going
+### 🧠 Why This Makes Sense for Loopr — And Where It’s Going
 
-> ⚡️ **The Problem**
+> ⚡️ **The Real Struggle**
 >
-> Right now, Web3 is still way too complicated — especially for the next-gen. You’ve got to create a wallet, manage private/public keys, handle gas, and figure out how to move funds. It’s a mess. That complexity stops normal users from adopting Web3 for daily payments.
+> Right now, subscriptions are messy. Users juggle multiple cards, wallets, and banks just to keep track of recurring payments. Cancelling often means contacting a merchant, hidden charges slip through, and there’s no unified way to manage everything. For companies, integrating recurring payments means relying on centralized processors that limit flexibility and user control. This complexity stops both users and businesses from truly embracing decentralized payments for everyday subscriptions.
 >
-> But with **ZAAP**, it’s different. You onboard instantly — just sign in with your social login. No seed phrases. No extensions. No confusion. It feels like a regular app — but under the hood, it’s Web3-powered.
+> But with **Loopr**, it’s different. Subscriptions become simple, transparent, and on-chain. Users onboard instantly with Web3Auth social logins — no seed phrases, no complex wallet setup. At checkout on any app/web, “Pay with Loopr” generates a QR. The user scans with the Loopr app → payment is made, subscription auto-tracked in their dashboard.
 >
-> Imagine a teen with a **MetaMask Card** linked to their delegated wallet. They can just swipe or scan to pay at any store, kiosk, or merchant. The transaction happens in USDC, and their parent gets an instant update. They can fund the wallet, set limits, or pause access — all from their web dashboard.
+> Cancelling or pausing is one click on-chain — no merchant approval needed. Every payment is verifiable, transparent, and organized.
 >
-> The MetaMask Card isn’t live yet, so we couldn’t test swipes directly — but everything else is ready. Once it's launched, ZAAP fits in directly. We’re also looking ahead: in India, we plan to integrate **UPI payments**, making it even more real-world ready.
+> For businesses, our plug-and-play Web SDK means integrating recurring Web3 payments is as simple as dropping in a button.ou onboard instantly — just sign in with your social login. No seed phrases. No extensions. No confusion. It feels like a regular app — but under the hood, it’s Web3-powered.
 >
 > And forget about gas fees — we sponsor them. Users can pay a small annual fee and never worry about onchain transaction costs. That’s a big UX win.
 >
-> Looking forward, we can build loyalty and reward layers on top. We already track spending, saving, and limits — so we can partner with **teen-focused brands** to offer cashbacks, streak rewards, or custom deals. It makes ZAAP sticky, fun, and personal.
+> But this is only the beginning. Our roadmap includes expanding and becomes a universal option across merchants, building smarter dashboards with spending insights and alerts, and scaling our rewards system where every payment interaction can unlock curated NFT rewards. These NFTs aren’t just collectibles — they’re tools for brands to connect more deeply with loyal users, turning subscriptions into an engaging, reward-driven ecosystem.
 >
-> This isn’t just another payment app. It’s **real-world Web3 adoption** — where MetaMask Cards help teens gain financial freedom, while parents keep control. Zero banks, zero friction, 100% ZAAP.
+> In the long run, Loopr isn’t just another subscription tracker. It’s a complete rethinking of how subscriptions should work in the Web3 era: transparent, user-first, and reward-powered. Subscriptions are everywhere in modern life, and Loopr is here to make them effortless for users and smarter for businesses.
 
 
 ### Flow of our APP:
@@ -288,7 +288,7 @@ cd Loopr
 
 ### For Android App -
 ```bash
-# Clone the repo Zaap-Android
+# Clone the repo Loopr-android
 # Build the project using Gradle
 ```
 
