@@ -30,7 +30,7 @@ Loopr is a decentralized subscription payment and management platform built on S
 </a>
 
 - **Pitch Deck / PPT Link:** [Loopr Pitch Deck](https://www.loom.com/share/de900f9930114f8abc52eef0b2a8f072?sid=47055120-c49e-4e6f-8514-af0758b1953d)
-- **Loopr Web SDK NPM Package :** [![npm version](https://img.shields.io/npm/v/@amitrajeet7635/loopr-sdk.svg)](https://www.npmjs.com/package/loopr-sdk)
+- **Loopr Web SDK NPM Package :** [![npm version](https://img.shields.io/npm/v/loopr-sdk.svg)](https://www.npmjs.com/package/loopr-sdk)
 [![GitHub Package](https://img.shields.io/badge/GitHub-Package-blue?logo=github)](https://github.com/amitrajeet7635/Loopr/pkgs/npm/loopr-sdk)
 
 - **Android App APK:** [Download Loopr APK (Android)](https://drive.google.com/drive/folders/1G7T06gCsx93fCXGpHH7SzYnNDyLpwLYx?usp=sharing)
