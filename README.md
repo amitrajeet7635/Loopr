@@ -154,6 +154,19 @@ Major Highlights of your project:
   <img width="400" alt="image" src="https://github.com/user-attachments/assets/d0e0abb9-47a2-43da-b033-5fa11ca188c8" />
 </div>
 
+---
+
+## Loopr Architecture:
+
+### Web-SDK:
+
+<img width="700"  alt="LOOPR WORKFLOW SDK" src="https://github.com/user-attachments/assets/623a046b-010c-4c43-a492-450cfca73b5f" />
+
+### Mobile:
+
+<img width="700" alt="LOOPR WORKFLOW Mobile " src="https://github.com/user-attachments/assets/649b54c5-28e7-4938-96b5-a0e6152ce708" />
+
+---
 
 ### **Ahhh! Some pivots, brainstorms, or breakthroughs during hacking:**
 1. Switched from Traditional Wallets to Smart Accounts — We shifted to MetaMask DTK for flexible, delegated wallet access without compromising control, this also gave us added advantages.
@@ -163,6 +176,7 @@ Major Highlights of your project:
 5. Child and Parent Wallet Connect - We engineered this thing on our own, and it has been a major breakthru. Connecting wallets was never more simpler than this.
 6. At first we thought to go with Linea, but then due to some problems/issues from their dev end, we shifted to ethereum.
 
+---
 
 ## 🧪 What’s Working Now?
 
@@ -180,39 +194,99 @@ Major Highlights of your project:
 
 ---
 
-## <img src = "https://user-images.githubusercontent.com/74038190/212284087-bbe7e430-757e-4901-90bf-4cd2ce3e1852.gif" width = "24"/> How to Run the Project Locally
+## <img src = "https://user-images.githubusercontent.com/74038190/212284087-bbe7e430-757e-4901-90bf-4cd2ce3e1852.gif" width = "24"/> 
 
-### Requirements:
-- Node.js / Python / Docker / etc.
-- API Keys (if any)
-- .env file setup (if needed)
 
-### Local Setup:
+## 🛠️ Run Locally
+
+###  Prerequisites
+
+Before running the project locally, ensure you have the following installed:
+
+- [Node.js (>=18.x)](https://nodejs.org/)  
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)  
+- [Rust](https://www.rust-lang.org/tools/install)  
+- [Solana CLI](https://docs.solana.com/cli/install-solana-cli-tools)  
+- [Anchor Framework](https://www.anchor-lang.com/docs/installation) (if using Anchor for smart contracts)  
+- [Git](https://git-scm.com/)
+
+---
+
+### 1. Clone the Repository
 ```bash
-# Clone the repo
-git clone [https://github.com/amanna13/Lumos.git](https://github.com/amanna13/Zaap.git)
+git clone https://github.com/amitrajeet7635/Loopr.git
+cd Loopr
+````
 
+---
 
-# Install dependencies
-## For Web
-cd Zaap-Web
-cd zapp-frontend
-npm install
-npm run dev
+### 📦 Loopr-SDK (TypeScript SDK)
 
-cd zaap-backend
-npm install
-npm run dev
+1. Navigate to the SDK directory:
 
-#Both Frontend and Backend both are deployed on vercel:
-Frontend: https://zaap-eight.vercel.app/
-Backend: https://zaap-backend.vercel.app/
+   ```bash
+   cd Loopr-SDK
+   ```
 
-#API Endpoint:
-POST - /api/connect-child
-POST - /api/set-delegator
+2. Install dependencies:
 
-```
+   ```bash
+   npm install
+   ```
+
+3. Build the SDK:
+
+   ```bash
+   npm run build
+   ```
+
+4. (Optional) Link the SDK locally for use in another project:
+
+   ```bash
+   npm link
+   ```
+
+---
+
+### ⚡ Smart Contracts (Rust + Solana)
+
+1. Navigate to the backend/contracts directory:
+
+   ```bash
+   cd Loopr-Backend
+   ```
+
+2. Build the contracts:
+
+   ```bash
+   cargo build-bpf
+   ```
+
+   or if using Anchor:
+
+   ```bash
+   anchor build
+   ```
+
+3. Start a local Solana test validator (in a separate terminal):
+
+   ```bash
+   solana-test-validator
+   ```
+
+4. Deploy the contracts:
+
+   ```bash
+   solana program deploy target/deploy/loopr.so
+   ```
+
+   or with Anchor:
+
+   ```bash
+   anchor deploy
+   ```
+
+---
 
 ### For Android App -
 ```bash
@@ -247,7 +321,7 @@ If we receive enough positive feedback and community interest, we’ll take this
 <table align="left">
   <tr>
     <td><img src="https://github.com/Anmol-Baranwal/Cool-GIFs-For-GitHub/assets/74038190/7bb1e704-6026-48f9-8435-2f4d40101348" width="50"></td>
-    <td><h4>Built by the Loopr Teaam</h4></td>
+    <td><h4>Built by the Loopr Team</h4></td>
   </tr>
   <tr>
     <td colspan="2" align="center">
