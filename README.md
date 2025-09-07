@@ -78,12 +78,12 @@ We believe financial literacy and independence should start early, and ZAAP offe
 
 Major Highlights of your project:
 
-- ✅ Teen users can scan QR codes and pay directly using circle wallets without needing custody.
-- ✅ Parents can log in via MetaMask DTK to fund, monitor, and control their child's wallet and spending.
-- ✅ Supports both Web3 social login (via Web3Auth) and MetaMask DTK for secure and flexible access.
-- ✅ No KYC required for children; built to ensure financial autonomy while protecting identity.
-- ✅ Enables seamless USDC transfers between parent and child wallets using Circle’s developer SDKs.
-- ✅ Smart Savings by Child
+- ✅ Plug-and-play SDK for recurring subscription payments
+- ✅ All-in-one mobile app to track, manage, pause, or cancel subscriptions
+- ✅ Web3Auth social logins for seamless Web2 → Web3 onboarding
+- ✅ Solana Pay QR support — dynamic auto-fill or manual setup for static QRs
+- ✅ NFT rewards layer to engage and reward loyal subscribers
+- ✅ On-chain transparency with verifiable transactions and spend insights
 
 
 ### 🧠 Why This Makes Sense for MetaMask Card Users — And Where It’s Going
