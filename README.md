@@ -148,10 +148,11 @@ Major Highlights of your project:
 
 ### Web SDK:
 <div align="left">
-  <img width="400" alt="image" src="https://github.com/user-attachments/assets/e7ced827-678a-4586-896c-a31f76537bf8" />
-  <img width="400" alt="image" src="https://github.com/user-attachments/assets/f4c34ab7-3d15-4fc2-b0d0-996fbb3948b6" />
-  <img width="400" alt="image" src="https://github.com/user-attachments/assets/697ed4da-1683-493e-8d93-7a9df4f3013f" />
-  <img width="400" alt="image" src="https://github.com/user-attachments/assets/d0e0abb9-47a2-43da-b033-5fa11ca188c8" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/e7ced827-678a-4586-896c-a31f76537bf8" style="margin-right: 20px;" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/a1fc0552-26aa-4ef8-b1f5-38635d04d538" style="margin-right: 20px;" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/f4c34ab7-3d15-4fc2-b0d0-996fbb3948b6" style="margin-right: 20px;" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/697ed4da-1683-493e-8d93-7a9df4f3013f" style="margin-right: 20px;" />
+  <img width="400" alt="image" src="https://github.com/user-attachments/assets/d0e0abb9-47a2-43da-b033-5fa11ca188c8" style="margin-right: 20px;" />
 </div>
 
 ---
