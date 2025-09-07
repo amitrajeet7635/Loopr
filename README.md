@@ -233,9 +233,9 @@ POST - /api/set-delegator
 ##  <img src="https://user-images.githubusercontent.com/74038190/216122041-518ac897-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="26" /> What's Next ? Are we still onto it ! 
 
 100% — this is not just a one-weekend hack.
-We’ve built a solid prototype on Web and Android, and have been heads down on this project for weeks.
-ZAAP is here to stay. While this submission marks a milestone, our team is actively working to fix bugs and improve the product.
-If we receive enough positive feedback and community interest, we will definitely launch ZAAP in the market.
+We’ve already built a working Web SDK (npm package) and a functional Android app prototype, and have been heads down on this for weeks.
+Loopr is here to stay. While this submission marks a milestone, our team is actively working to fix bugs and enhance the product. Also we have more ideas to expand and scale this further.
+If we receive enough positive feedback and community interest, we’ll take this from prototype to full production release.
 
 
 **Subscriptions made simple by LOOPR Powered by SolanaPay.**
