@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/status-Prototype-orange" alt="Status" />
   <img src="https://img.shields.io/badge/version-0.1.0-blue" alt="Version" />
   <img src="https://img.shields.io/badge/stability-Prototype-lightgrey" alt="Stability" />
-  <img src="https://vbr.nathanchung.dev/badge?page_id=amitrajeet7635.Loopr" alt="Visitors" />
+  <img src="https://vbr.nathanchung.dev/badge?page_id=amitrajeet7635.loopr&label=Views&logoColor=white&color=ff9900&style=plastic" alt="Active Nodes" />
   <br/>
   <img src = "https://img.shields.io/badge/Android-green?logo=android&logoColor=white" />
   <img src="https://img.shields.io/badge/-Blockchain-121212?logo=blockchaindotcom&logoColor=white" alt="Blockchain" />
@@ -20,13 +20,13 @@
 </p>
 </div>
 
-### 📌 Submitted on MetaMask-Card-Dev-Cook-Off
+### 📌 Submitted on MetaMask Embedded Wallets & Solana Dev Cook-Off
 Loopr is a decentralized subscription payment and management platform built on Solana. It enables businesses to integrate seamless subscription payments into their applications and allows users to manage all their subscriptions in one place.
 
 ## Live Demos & Deliverables
 - **Demo Video (Click below to watch the youtube video):** - [Loopr BuildShowcase | Project Demo](https://youtu.be/GGL45ifVnbM) <br>
 <a href="https://youtu.be/GGL45ifVnbM" target="_blank">
-<img width="400"  alt="BUILDSHOWCASE LOOPR" src="https://github.com/user-attachments/assets/57101dff-7f40-4e7e-ae1c-e2e151fb25df" />
+<img width="300"  alt="BUILDSHOWCASE LOOPR" src="https://github.com/user-attachments/assets/57101dff-7f40-4e7e-ae1c-e2e151fb25df" />
 
 </a>
 
@@ -35,6 +35,7 @@ Loopr is a decentralized subscription payment and management platform built on S
 [![GitHub Package](https://img.shields.io/badge/GitHub-Package-blue?logo=github)](https://github.com/amitrajeet7635/Loopr/pkgs/npm/loopr-sdk)
 
 - **Android App APK:** [Download Loopr APK (Android)](https://drive.google.com/drive/folders/1G7T06gCsx93fCXGpHH7SzYnNDyLpwLYx?usp=sharing)
+- **For Demo Experience** - Scroll below ↓
 
 ---
 
@@ -100,22 +101,20 @@ Major Highlights of your project:
 >
 > For businesses, our plug-and-play Web SDK means integrating recurring Web3 payments is as simple as dropping in a button.ou onboard instantly — just sign in with your social login. No seed phrases. No extensions. No confusion. It feels like a regular app — but under the hood, it’s Web3-powered.
 >
-> And forget about gas fees — we sponsor them. Users can pay a small annual fee and never worry about onchain transaction costs. That’s a big UX win.
->
 > But this is only the beginning. Our roadmap includes expanding and becomes a universal option across merchants, building smarter dashboards with spending insights and alerts, and scaling our rewards system where every payment interaction can unlock curated NFT rewards. These NFTs aren’t just collectibles — they’re tools for brands to connect more deeply with loyal users, turning subscriptions into an engaging, reward-driven ecosystem.
 >
 > In the long run, Loopr isn’t just another subscription tracker. It’s a complete rethinking of how subscriptions should work in the Web3 era: transparent, user-first, and reward-powered. Subscriptions are everywhere in modern life, and Loopr is here to make them effortless for users and smarter for businesses.
 
 
-### Flow of our APP:
-1. Parent first connect existing Metamask Wallet(Or create a new wallet )
-2. Add a new child profile - set nickname, amount to be spend and Done.. 
-3. Click on Show QR
-4. On the mobile app, first login with your socials, and then you'd be prompted to setup Zaap CircleLink
-5. Scan the QR from there, shown on the web dashboard and here you go ... ! 
-6. Now you can start Zaaping
-7. Scan & Pay, Transfer to wallet addresses, Deposit in wallet, Check your set limits thru your phone, Setup monthly goals and much more unlocked !! 
-
+### Flow of our entire Loopr Ecosystem:
+1. User signs in via Web3Auth social login (Google, Twitter, etc.) A non-custodial wallet is created under the hood — no seed phrases, no complexity.
+2. Businesses/ Merchants use the Loopr SDK, eliminating the need to build complex billing infrastructure. 
+3. On a merchant’s website, user clicks “Pay with Loopr.
+4. A dynamic QR code is generated. User opens the Loopr app and scans the QR.
+5. For Loopr dynamic QRs → subscription details are auto-filled & for static Solana Pay QRs → user manually enters amount and billing cycle.
+6. Payment is processed via Solana Pay and you are good to go ! 
+7. User receives confirmation + optional NFT reward (coupon, collectible, or perk). Subscription details are saved on-chain and synced to the Loopr dashboard. Get alerts & insights for better budgeting
+8. Every interaction (payment, renewal, milestone) can trigger NFT rewards curated by companies. NFTs help businesses engage loyal users while giving users portable, tradeable value.
 
 ## 🛠️ Tech Stack
 
@@ -146,7 +145,7 @@ Major Highlights of your project:
 </div>
 
 
-### Web SDK:
+### Web SDK Integration on Merchants website:
 <div align="left">
   <img width="400" alt="image" src="https://github.com/user-attachments/assets/e7ced827-678a-4586-896c-a31f76537bf8" style="margin-right: 20px;" />
   <img width="400" alt="image" src="https://github.com/user-attachments/assets/a1fc0552-26aa-4ef8-b1f5-38635d04d538" style="margin-right: 20px;" />
@@ -170,12 +169,10 @@ Major Highlights of your project:
 ---
 
 ### **Ahhh! Some pivots, brainstorms, or breakthroughs during hacking:**
-1. Switched from Traditional Wallets to Smart Accounts — We shifted to MetaMask DTK for flexible, delegated wallet access without compromising control, this also gave us added advantages.
-2. Reduction of Gas Fees - As we have used Metamask DTK, we got the advantage, to sponsor gas fees enabling smooth user experience.
-3. Brainstormed Dual Experience (Parent + Teen) — Decided to split experiences across mobile (for teens) and web (for parents) to optimize UX per user role.
-4. Breakthrough Using Circle & MetaMask Card for Spending — Realized we could route transactions via MetaMask/Circle cards to simulate real-world teen payments.
-5. Child and Parent Wallet Connect - We engineered this thing on our own, and it has been a major breakthru. Connecting wallets was never more simpler than this.
-6. At first we thought to go with Linea, but then due to some problems/issues from their dev end, we shifted to ethereum.
+1. **Switched from Static Wallets to Web3Auth Social Logins** — We realized it would create massive friction for new users. Hence we moved to _Web3Auth_, this gave us a smooth Web2-like experience while staying Web3-native.
+2. **Dynamic vs Static QR Handling** - At first, we planned to only support our own Loopr-generated QRs. Then we realized that merchants (and users) already use Solana Pay QRs. We engineered support for both.
+3. **Rewards Layer via NFTs** - We debated whether rewards should just be points or badges. But points = Web2, closed, and boring. Hence we decided to issue NFT rewards tied to subscription activity. These NFTs can be collectibles, coupons, or perks — and most importantly, they’re portable and tradeable. This turned subscriptions into an _engagement channel for companies_, not just payments.
+4. **Contract Stack Exploration** - We initially considered building contracts directly in Rust with Solana. But to speed things up and simplify dev experience, we narrowed down to _Solana Pay’s proven base layer_, then layered Loopr’s subscription + reward logic on top. This gave us a balance of both stability and innovation.
 
 ---
 
@@ -208,7 +205,7 @@ Before running the project locally, ensure you have the following installed:
 - [Anchor Framework](https://www.anchor-lang.com/docs/installation) (if using Anchor for smart contracts)  
 - [Git](https://git-scm.com/)
 
----
+
 
 ### 1. Clone the Repository
 ```bash
@@ -216,7 +213,7 @@ git clone https://github.com/amitrajeet7635/Loopr.git
 cd Loopr
 ````
 
----
+
 
 ### 📦 Loopr-SDK (TypeScript SDK)
 
@@ -243,8 +240,6 @@ cd Loopr
    ```bash
    npm link
    ```
-
----
 
 ### ⚡ Smart Contracts (Rust + Solana)
 
@@ -284,7 +279,6 @@ cd Loopr
    anchor deploy
    ```
 
----
 
 ### For Android App -
 ```bash
